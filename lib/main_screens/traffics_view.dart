@@ -7,7 +7,7 @@ class TrafficsView extends StatelessWidget {
     required this.trafficsPosts,
   });
 
-  final List<Map<String, dynamic>> trafficsPosts;
+  final List<dynamic> trafficsPosts;
 
   @override
   Widget build(BuildContext context) {

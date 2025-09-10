@@ -35,7 +35,7 @@ class PostView extends StatelessWidget {
                   padding: const EdgeInsets.all(4),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: Image.asset(
+                      child: Image.network(
                         imagePath!,
                         fit: BoxFit.fill,
                         width: double.infinity,

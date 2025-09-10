@@ -3,7 +3,7 @@ import 'package:my_governate_app/models/post_model.dart';
 
 class ServicesView extends StatelessWidget {
   const ServicesView({super.key, required this.servicesPosts});
-  final List<Map<String, dynamic>> servicesPosts;
+  final List<dynamic> servicesPosts;
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +13,11 @@ class ServicesView extends StatelessWidget {
       itemBuilder: (context, index) {
         final post = servicesPosts[index];
         return PostModel(
-          title: post["title"]!,
-          imagePath: post["imagePath"]!,
-          numOfVotes: post["numOfVotes"]!,
-          rate: post["rate"]!,
-          content: post["content"]!,
+          title: post["title"]! ?? '',
+          imagePath: post["imagePath"]! ?? '',
+          numOfVotes: post["numOfVotes"]! ?? '',
+          rate: post["rate"]! ?? '',
+          content: post["content"]! ?? '',
         );
       },
     );

@@ -7,7 +7,7 @@ class TourismView extends StatelessWidget {
     required this.tourismPosts,
   });
 
-  final List<Map<String, dynamic>> tourismPosts;
+  final List<dynamic> tourismPosts;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,11 @@ class TourismView extends StatelessWidget {
       itemBuilder: (context, index) {
         final post = tourismPosts[index];
         return PostModel(
-          title: post["title"]!,
-          imagePath: post["imagePath"]!,
-          numOfVotes: post["numOfVotes"]!,
-          rate: post["rate"]!,
-          content: post["content"]!,
+          title: post["title"] ?? '',
+          imagePath: post["imagePath"] ?? '',
+          numOfVotes: post["numOfVotes"] ?? '',
+          rate: post["rate"] ?? '',
+          content: post["content"] ?? '',
         );
       },
     );

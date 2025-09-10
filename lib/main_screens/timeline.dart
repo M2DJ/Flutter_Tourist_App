@@ -13,59 +13,146 @@ class TimelineScreen extends StatefulWidget {
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
+  final OpenTriMapsCalls _apiCaller = OpenTriMapsCalls();
+
+  bool _isLoading = true;
+
+  String? _errorMessage;
+
+  void initState() {
+    super.initState();
+
+    _loadData();
+  }
+
+  Future _loadData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      var cairoData = await _apiCaller.fetchCairoData();
+
+      if (cairoData != null && cairoData['features'] is List) {
+        List features = cairoData['features'];
+        
+        List mappedTourismPosts = features.map((feature) {
+          return {
+            "title": feature['properties']['name'] ?? 'Unnamed Place',
+            "imagePath": 'assets/images/Pyramids.png',
+            "rate": (feature['properties']['rate'] ?? 0.0),
+            "numOfVotes": 0,
+            "content": "Description not loaded yet."
+          };
+        }).toList();
+
+        setState(() {
+          tourismPosts = mappedTourismPosts;
+          servicesPosts = [
+            {
+              "title": "Takeaway restaurent",
+              "imagePath": "assets/images/restaurant.png",
+              "rate": 2.1,
+              "numOfVotes": 40,
+              "content": "content"
+            },
+            {
+              "title": "Balady Cafe",
+              "imagePath": "assets/images/little_shop.jpeg",
+              "rate": 2.99,
+              "numOfVotes": 42,
+              "content": "content"
+            },
+          ];
+          trafficsPosts = [
+            {
+              "title": "Ramsis station",
+              "imagePath": "assets/images/ramsis.png",
+              "rate": 4.7,
+              "numOfVotes": 50,
+              "content": "content"
+            },
+            {
+              "title": "Balady Cafe",
+              "imagePath": "assets/images/little_shop.jpeg",
+              "rate": 4.7,
+              "numOfVotes": 10,
+              "content": "content"
+            },
+          ];
+          _isLoading = false;
+        });
+      } else {
+        print('Data format is incorrect or features is not a list');
+        throw Exception('Data format is incorrect');
+      }
+    } on Exception catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Could not load attractions. Tap to retry';
+      });
+      print(e);
+    }
+  }
+
+  List tourismPosts = [];
+  List servicesPosts = [
+    {
+      "title": "Takeaway restaurent",
+      "imagePath": "assets/images/restaurant.png",
+      "rate": 2.1,
+      "numOfVotes": 40,
+      "content": "content"
+    },
+    {
+      "title": "Balady Cafe",
+      "imagePath": "assets/images/little_shop.jpeg",
+      "rate": 2.99,
+      "numOfVotes": 42,
+      "content": "content"
+    },
+  ];
+  List trafficsPosts = [
+    {
+      "title": "Ramsis station",
+      "imagePath": "assets/images/ramsis.png",
+      "rate": 4.7,
+      "numOfVotes": 50,
+      "content": "content"
+    },
+    {
+      "title": "Balady Cafe",
+      "imagePath": "assets/images/little_shop.jpeg",
+      "rate": 4.7,
+      "numOfVotes": 10,
+      "content": "content"
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    // Temporary static list
-    //replace this with data from API or state management later
-    final tourismPosts = [
-      {
-        "title": "Giza Pyramid",
-        "imagePath": "assets/images/Pyramids.png",
-        "rate": 4.7,
-        "numOfVotes": 40,
-        "content":
-            "The Pyramids of Giza are Egypt’s most iconic monuments and one of the world’s greatest historical treasures. Built over 4,500 years ago as royal tombs for the Pharaohs, they include the Great Pyramid of Khufu, the Pyramid of Khafre, and the smaller Pyramid of Menkaure. Together with the mysterious Sphinx, they stand as a symbol of ancient Egyptian civilization and continue to attract millions of visitors from around the globe."
-      },
-      {
-        "title": "Balady Cafe",
-        "imagePath": "assets/images/little_shop.jpeg",
-        "rate": 3.78,
-        "numOfVotes": 20,
-        "content": "content"
-      },
-    ];
-    final servicesPosts = [
-      {
-        "title": "Takeaway restaurent",
-        "imagePath": "assets/images/restaurant.png",
-        "rate": 2.1,
-        "numOfVotes": 40,
-        "content": "content"
-      },
-      {
-        "title": "Balady Cafe",
-        "imagePath": "assets/images/little_shop.jpeg",
-        "rate": 2.99,
-        "numOfVotes": 42,
-        "content": "content"
-      },
-    ];
-    final trafficsPosts = [
-      {
-        "title": "Ramsis station",
-        "imagePath": "assets/images/ramsis.png",
-        "rate": 4.7,
-        "numOfVotes": 50,
-        "content": "content"
-      },
-      {
-        "title": "Balady Cafe",
-        "imagePath": "assets/images/little_shop.jpeg",
-        "rate": 4.7,
-        "numOfVotes": 10,
-        "content": "content"
-      },
-    ];
+    //To show a loading indicator when fething the data
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    //To show the error message if there is any
+    if (_errorMessage != null) {
+      return Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_errorMessage!),
+            IconButton(onPressed: _loadData, icon: const Icon(Icons.refresh)),
+          ],
+        ),
+      );
+    }
 
     return DefaultTabController(
       length: 3,
