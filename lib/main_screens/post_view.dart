@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_governate_app/widgets/custom_app_bar.dart';
 import 'package:my_governate_app/widgets/voting_row.dart';
 
-
 class PostView extends StatelessWidget {
   final String? title;
   final String? imagePath;
