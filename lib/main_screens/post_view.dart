@@ -14,7 +14,8 @@ class PostView extends StatelessWidget {
       this.content,
       this.rate,
       this.numOfVotes,
-      this.title});
+      this.title,
+      });
 
   @override
   Widget build(BuildContext context) {

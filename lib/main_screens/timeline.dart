@@ -14,6 +14,7 @@ class TimelineScreen extends StatefulWidget {
 
 class _TimelineScreenState extends State<TimelineScreen> {
   final OpenTriMapsCalls _apiCaller = OpenTriMapsCalls();
+  late List cairoXid = [];
 
   bool _isLoading = true;
 
@@ -22,29 +23,60 @@ class _TimelineScreenState extends State<TimelineScreen> {
   void initState() {
     super.initState();
 
-    _loadData();
+    _loadPlaceData();
   }
 
-  Future _loadData() async {
+  Future _loadPlaceData() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
+      //This is for calling the API
       var cairoData = await _apiCaller.fetchCairoData();
+      late List<Map> cairoContent = [];
+      //Make a function that gets the details of a place when Tapped
+      //This is for adding every xid of every place in cairo into a List
+      for (var xid in cairoData['features']) {
+        cairoXid.add(xid['properties']['xid']);
+      }
+
+      for (var xid in cairoXid.sublist(0, 3)) {
+        try {
+          var content = await _apiCaller.fetchStateInfo(xid);
+          cairoContent.add(content);
+        } catch (e) {
+          print(e);
+        }
+      }
 
       if (cairoData != null && cairoData['features'] is List) {
         List features = cairoData['features'];
-        
+        List content = [];
+        for (var place in cairoContent) {
+          if (place['wikipedia_extracts'] != null) {
+            content.add(place['wikipedia_extracts']['text']);
+          } else {
+            content.add("No description available.");
+          }
+        }
+
+        int index = 0;
         List mappedTourismPosts = features.map((feature) {
-          return {
+          var post = {
             "title": feature['properties']['name'] ?? 'Unnamed Place',
             "imagePath": 'assets/images/Pyramids.png',
             "rate": (feature['properties']['rate'] ?? 0.0),
             "numOfVotes": 0,
-            "content": "Description not loaded yet."
+            "content": index < content.length
+                ? content[index]
+                : "No description available",
+            "xid": feature['properties']['xid'],
           };
+          index++;
+
+          return post;
         }).toList();
 
         setState(() {
@@ -98,36 +130,36 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
   List tourismPosts = [];
   List servicesPosts = [
-    {
-      "title": "Takeaway restaurent",
-      "imagePath": "assets/images/restaurant.png",
-      "rate": 2.1,
-      "numOfVotes": 40,
-      "content": "content"
-    },
-    {
-      "title": "Balady Cafe",
-      "imagePath": "assets/images/little_shop.jpeg",
-      "rate": 2.99,
-      "numOfVotes": 42,
-      "content": "content"
-    },
+    // {
+    //   "title": "Takeaway restaurent",
+    //   "imagePath": "assets/images/restaurant.png",
+    //   "rate": 2.1,
+    //   "numOfVotes": 40,
+    //   "content": "content"
+    // },
+    // {
+    //   "title": "Balady Cafe",
+    //   "imagePath": "assets/images/little_shop.jpeg",
+    //   "rate": 2.99,
+    //   "numOfVotes": 42,
+    //   "content": "content"
+    // },
   ];
   List trafficsPosts = [
-    {
-      "title": "Ramsis station",
-      "imagePath": "assets/images/ramsis.png",
-      "rate": 4.7,
-      "numOfVotes": 50,
-      "content": "content"
-    },
-    {
-      "title": "Balady Cafe",
-      "imagePath": "assets/images/little_shop.jpeg",
-      "rate": 4.7,
-      "numOfVotes": 10,
-      "content": "content"
-    },
+    // {
+    //   "title": "Ramsis station",
+    //   "imagePath": "assets/images/ramsis.png",
+    //   "rate": 4.7,
+    //   "numOfVotes": 50,
+    //   "content": "content"
+    // },
+    // {
+    //   "title": "Balady Cafe",
+    //   "imagePath": "assets/images/little_shop.jpeg",
+    //   "rate": 4.7,
+    //   "numOfVotes": 10,
+    //   "content": "content"
+    // },
   ];
 
   @override
@@ -148,7 +180,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(_errorMessage!),
-            IconButton(onPressed: _loadData, icon: const Icon(Icons.refresh)),
+            IconButton(
+                onPressed: _loadPlaceData, icon: const Icon(Icons.refresh)),
           ],
         ),
       );
