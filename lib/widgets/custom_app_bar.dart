@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_governate_app/notification/notification_screens.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -46,10 +47,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               width: MediaQuery.sizeOf(context).width * 0.5,
             ),
             GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const NotificationScreen();
+                    },
+                  ));
+                },
                 child: Image.asset(
-              "assets/icons/image.png",
-              scale: 2,
-            ))
+                  "assets/icons/image.png",
+                  scale: 2,
+                ))
           ],
         ),
       ],

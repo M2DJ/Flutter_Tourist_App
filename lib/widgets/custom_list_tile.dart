@@ -7,18 +7,14 @@ class CustomListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: ListTile(
-        title: Text(title!,
-            style: const TextStyle(
-                color: Color(0xff006FFD), fontWeight: FontWeight.w500)),
-        leading: CircleAvatar(
-          radius: 16,
-          backgroundColor: const Color.fromARGB(255, 146, 165, 190),
-          child: icon,
-        ),
-        onTap: () {},
+    return ListTile(
+      title: Text(title!,
+          style: const TextStyle(
+              color: Color(0xff006FFD), fontWeight: FontWeight.w500)),
+      leading: CircleAvatar(
+        radius: 16,
+        backgroundColor: const Color.fromARGB(255, 146, 165, 190),
+        child: icon,
       ),
     );
   }

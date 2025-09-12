@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_governate_app/help_and_support/help_and_support.dart';
+import 'package:my_governate_app/map_screen/map_screen.dart';
 import 'package:my_governate_app/widgets/custom_list_tile.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -56,12 +58,21 @@ class CustomDrawer extends StatelessWidget {
             endIndent: 10,
             indent: 10,
           ),
-          const CustomListTile(
-              title: "Map",
-              icon: Icon(
-                Icons.location_on,
-                color: Colors.white,
-              )),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return const MapScreen();
+                },
+              ));
+            },
+            child: const CustomListTile(
+                title: "Map",
+                icon: Icon(
+                  Icons.location_on,
+                  color: Colors.white,
+                )),
+          ),
           const Divider(
             color: Color(0xffD4D6DD),
             endIndent: 10,
@@ -78,12 +89,21 @@ class CustomDrawer extends StatelessWidget {
             endIndent: 10,
             indent: 10,
           ),
-          const CustomListTile(
-              title: "Help & Support",
-              icon: Icon(
-                Icons.question_mark_outlined,
-                color: Colors.white,
-              )),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return const HelpSupportPage();
+                },
+              ));
+            },
+            child: const CustomListTile(
+                title: "Help & Support",
+                icon: Icon(
+                  Icons.question_mark_outlined,
+                  color: Colors.white,
+                )),
+          ),
           const Divider(
             color: Color(0xffD4D6DD),
             endIndent: 10,

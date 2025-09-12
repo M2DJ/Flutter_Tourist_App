@@ -85,10 +85,10 @@ class AppStyles {
   }) {
     return InputDecoration(
       filled: true,
-      fillColor: Color(0xffF7F7F9),
+      fillColor:const Color(0xffF7F7F9),
       hintText: hintText,
       hintStyle: GoogleFonts.inter(
-        color: Color.fromARGB(255, 180, 180, 180),
+        color: const Color.fromARGB(255, 180, 180, 180),
         fontSize: 14,
       ),
 
