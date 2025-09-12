@@ -36,18 +36,19 @@ class _TimelineScreenState extends State<TimelineScreen> {
       //This is for calling the API
       var cairoData = await _apiCaller.fetchCairoData();
       late List<Map> cairoContent = [];
-      //Make a function that gets the details of a place when Tapped
+
       //This is for adding every xid of every place in cairo into a List
       for (var xid in cairoData['features']) {
         cairoXid.add(xid['properties']['xid']);
       }
 
-      for (var xid in cairoXid.sublist(0, 3)) {
+      for (var xid in cairoXid) {
         try {
           var content = await _apiCaller.fetchStateInfo(xid);
           cairoContent.add(content);
         } catch (e) {
           print(e);
+          cairoContent.add({"text": 'No description available'});
         }
       }
 
