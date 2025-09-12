@@ -5,9 +5,11 @@ class TourismView extends StatelessWidget {
   const TourismView({
     super.key,
     required this.tourismPosts,
+    // required this.onPostTap,
   });
 
   final List<dynamic> tourismPosts;
+  // final Function(String) onPostTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class TourismView extends StatelessWidget {
           numOfVotes: post["numOfVotes"] ?? '',
           rate: post["rate"] ?? '',
           content: post["content"] ?? '',
+          // onPostTap: () => onPostTap(index, p),
         );
       },
     );

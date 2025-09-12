@@ -17,7 +17,8 @@ class ServicesView extends StatelessWidget {
           imagePath: post["imagePath"]! ?? '',
           numOfVotes: post["numOfVotes"]! ?? '',
           rate: post["rate"]! ?? '',
-          content: post["content"]! ?? '',
+          content: post["content"]! ?? '', 
+
         );
       },
     );
