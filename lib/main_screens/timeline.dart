@@ -14,7 +14,6 @@ class TimelineScreen extends StatefulWidget {
 
 class _TimelineScreenState extends State<TimelineScreen> {
   final OpenTriMapsCalls _apiCaller = OpenTriMapsCalls();
-  late List cairoXid = [];
 
   bool _isLoading = true;
 
@@ -34,11 +33,13 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
     try {
       //This is for calling the API
-      var cairoData = await _apiCaller.fetchCairoData();
-      late List<Map> cairoContent = [];
+      var cairoTourismData = await _apiCaller.fetchCairoData();
+      final List cairoXid = [];
+      
+      final List<Map> cairoContent = [];
 
       //This is for adding every xid of every place in cairo into a List
-      for (var xid in cairoData['features']) {
+      for (var xid in cairoTourismData['features']) {
         cairoXid.add(xid['properties']['xid']);
       }
 
@@ -52,8 +53,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
         }
       }
 
-      if (cairoData != null && cairoData['features'] is List) {
-        List features = cairoData['features'];
+      if (cairoTourismData != null && cairoTourismData['features'] is List) {
+        List features = cairoTourismData['features'];
         List content = [];
         for (var place in cairoContent) {
           if (place['wikipedia_extracts'] != null) {
