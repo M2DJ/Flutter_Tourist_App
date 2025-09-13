@@ -27,23 +27,25 @@ class _TimelineScreenState extends State<TimelineScreen> {
   void initState() {
     super.initState();
 
-    _loadData();
+    _loadTourismData();
+    _loadServicesData();
+    _loadTrafficData();
   }
 
   /// Loads data from API and sets up posts
-  Future<void> _loadData() async {
+  Future<void> _loadTourismData() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      final cairoData = await _apiCaller.fetchCairoData();
-      List placeInfo = [];
+      final tourismData = await _apiCaller.fetchCairoData();
+      List tourismInfo = [];
 
       //This stores the xids(a unique ID for each place that shows more details about the place)
       List xIds = [];
-      for (var xid in cairoData['features']) {
+      for (var xid in tourismData['features']) {
         if (xid['properties']?['xid'] != null) {
           xIds.add(xid['properties']['xid']);
         }
@@ -51,27 +53,26 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
       //This is calling the api endpoint that gets more details about the place
       //This stores the data of each place in the placeInfo list
-      for (var xid in xIds) {
+      for (var xid in xIds.sublist(0, 5)) {
         try {
           var data = await _apiCaller.fetchPlaceInfo(xid);
-          placeInfo.add(data);
+          tourismInfo.add(data);
         } catch (e) {
           print("Couldn't fetch data: $e");
-          placeInfo.add(null);
+          tourismInfo.add(null);
         }
       }
 
-      if (cairoData != null && cairoData['features'] is List) {
-        final features = cairoData['features'] as List;
+      if (tourismData != null && tourismData['features'] is List) {
+        final features = tourismData['features'] as List;
 
         final mappedTourismPosts = [];
         for (int i = 0; i < features.length; i++) {
           String description = "Description not available at the moment";
-          String image =
-              'assets/images/Missing-Image.png';
+          String image = 'assets/images/Missing-Image.png';
           String rating = '';
-          if (i < placeInfo.length && placeInfo[i] != null) {
-            var details = placeInfo[i];
+          if (i < tourismInfo.length && tourismInfo[i] != null) {
+            var details = tourismInfo[i];
             description = details['wikipedia_extracts']?['text'] ??
                 "Description not available";
             if (details['image'] != null && details['image'] is String) {
@@ -96,52 +97,164 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
         setState(() {
           tourismPosts = mappedTourismPosts;
-          servicesPosts = [
-            {
-              "title": "Takeaway restaurant",
-              "imagePath": "assets/images/restaurant.png",
-              "rate": 2.1,
-              "numOfVotes": 40,
-              "lat": 30.056,
-              "lng": 31.234,
-              "content": "content"
-            },
-            {
-              "title": "Balady Cafe",
-              "imagePath": "assets/images/little_shop.jpeg",
-              "rate": 2.99,
-              "numOfVotes": 42,
-              "lat": 30.066,
-              "lng": 31.220,
-              "content": "content"
-            },
-          ];
-          trafficsPosts = [
-            {
-              "title": "Ramsis station",
-              "imagePath": "assets/images/ramsis.png",
-              "rate": 4.7,
-              "numOfVotes": 50,
-              "lat": 30.061,
-              "lng": 31.246,
-              "content": "content"
-            },
-            {
-              "title": "Traffic Point",
-              "imagePath": "assets/images/little_shop.jpeg",
-              "rate": 4.7,
-              "numOfVotes": 10,
-              "lat": 30.051,
-              "lng": 31.210,
-              "content": "content"
-            },
-          ];
           _isLoading = false;
         });
       } else {
         throw Exception('Data format is incorrect');
       }
     } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Could not load attractions. Tap to retry.';
+      });
+      debugPrint('Error loading data: $e');
+    }
+  }
+
+  Future<void> _loadServicesData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      //This api call fetches all the resaurants and cafes
+      final servicesData = await _apiCaller.fetchCairoData('foods');
+      List servicesInfo = [];
+
+      List xIds = [];
+      for (var xid in servicesData['features']) {
+        if (xid["properties"]?["xid"] != null) {
+          xIds.add(xid["properties"]["xid"]);
+        }
+      }
+
+      for (var xid in xIds) {
+        try {
+          var data = await _apiCaller.fetchPlaceInfo(xid);
+          servicesInfo.add(data);
+        } catch (e) {
+          print("Couldn't get place info due to an error: $e");
+          servicesInfo.add(null);
+        }
+      }
+
+      if (servicesData != null && servicesData['features'] is List) {
+        final features = servicesData['features'] as List;
+
+        final mappedservicesPosts = [];
+        for (int i = 0; i < features.length; i++) {
+          String description = "Description not available at the moment";
+          String image = 'assets/images/Missing-Image.png';
+          String rating = '';
+          if (i < servicesInfo.length && servicesInfo[i] != null) {
+            var details = servicesInfo[i];
+            description = details['wikipedia_extracts']?['text'] ??
+                "Description not available";
+            if (details['image'] != null && details['image'] is String) {
+              image = details['image'] ??
+                  'https://upload.wikimedia.org/wikipedia/commons/3/33/Image-missing.svg';
+            }
+            if (details['rate'] != null) {
+              rating = details['rate'] ?? '0.0';
+            }
+          }
+
+          mappedservicesPosts.add({
+            "title": features[i]['properties']['name'] ?? 'Unnamed Place',
+            "imagePath": image,
+            "rate": rating,
+            "numOfVotes": 0,
+            "lat": features[i]['geometry']['coordinates'][1],
+            "lng": features[i]['geometry']['coordinates'][0],
+            "content": description,
+          });
+        }
+
+        setState(() {
+          servicesPosts = mappedservicesPosts;
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Data format is incorrect');
+      }
+    } on Exception catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Could not load attractions. Tap to retry.';
+      });
+      debugPrint('Error loading data: $e');
+    }
+  }
+
+  Future<void> _loadTrafficData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      //This api call fetches all the train and bus stations
+      final trafficData = await _apiCaller.fetchCairoData();
+      List trafficInfo = [];
+
+      List xIds = [];
+      for (var xid in trafficData['features']) {
+        if (xid["properties"]?["xid"] != null) {
+          xIds.add(xid["properties"]["xid"]);
+        }
+      }
+
+      for (var xid in xIds) {
+        try {
+          var data = await _apiCaller.fetchPlaceInfo(xid);
+          trafficInfo.add(data);
+        } catch (e) {
+          print("Couldn't get place info due to an error: $e");
+          trafficInfo.add(null);
+        }
+      }
+
+      if (trafficData != null && trafficData['features'] is List) {
+        final features = trafficData['features'] as List;
+
+        final mappedTrafficPosts = [];
+        for (int i = 0; i < features.length; i++) {
+          String description = "Description not available at the moment";
+          String image = 'assets/images/Missing-Image.png';
+          String rating = '';
+          if (i < trafficInfo.length && trafficInfo[i] != null) {
+            var details = trafficInfo[i];
+            description = details['wikipedia_extracts']?['text'] ??
+                "Description not available";
+            if (details['image'] != null && details['image'] is String) {
+              image = details['image'] ??
+                  'https://upload.wikimedia.org/wikipedia/commons/3/33/Image-missing.svg';
+            }
+            if (details['rate'] != null) {
+              rating = details['rate'] ?? '0.0';
+            }
+          }
+
+          mappedTrafficPosts.add({
+            "title": features[i]['properties']['name'] ?? 'Unnamed Place',
+            "imagePath": image,
+            "rate": rating,
+            "numOfVotes": 0,
+            "lat": features[i]['geometry']['coordinates'][1],
+            "lng": features[i]['geometry']['coordinates'][0],
+            "content": description,
+          });
+        }
+
+        setState(() {
+          trafficsPosts = mappedTrafficPosts;
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Data format is incorrect');
+      }
+    } on Exception catch (e) {
       setState(() {
         _isLoading = false;
         _errorMessage = 'Could not load attractions. Tap to retry.';
@@ -179,7 +292,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
             children: [
               Text(_errorMessage!),
               const SizedBox(height: 10),
-              IconButton(onPressed: _loadData, icon: const Icon(Icons.refresh)),
+              IconButton(
+                  onPressed: _loadTourismData, icon: const Icon(Icons.refresh)),
             ],
           ),
         ),
