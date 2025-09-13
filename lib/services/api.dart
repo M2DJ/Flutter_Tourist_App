@@ -75,7 +75,7 @@ class OpenTriMapsCalls {
   /*
     This call is made to get more details about the place like: rating, images and description
   */
-  Future fetchStateInfo(var xid) async {
+  Future fetchPlaceInfo(var xid) async {
     final response = await http.get(Uri.parse(
         'https://api.opentripmap.com/0.1/en/places/xid/$xid?apikey=5ae2e3f221c38a28845f05b67fab4081ee576015481168cceca5fa5b'));
 

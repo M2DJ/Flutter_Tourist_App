@@ -5,10 +5,10 @@ import 'package:my_governate_app/widgets/voting_row.dart';
 class PostModel extends StatelessWidget {
   final String? title;
   final String? imagePath;
-  final double? rate;
+  final String? rate;
   final int? numOfVotes;
   final String? content;
-  // final Function(dynamic) onPostTap;
+  // final Function(double, double) onPostTap;
 
   const PostModel(
       {super.key,
@@ -56,7 +56,7 @@ class PostModel extends StatelessWidget {
                         rate: rate,
                         title: title!,
                         content: content!,
-                        // onPostTap: onPostTap,
+                        // onPostTap: (lat, lng) => onPostTap(lat, lng),
                       );
                     },
                   ));

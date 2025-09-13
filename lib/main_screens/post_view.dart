@@ -6,16 +6,18 @@ class PostView extends StatelessWidget {
   final String? title;
   final String? imagePath;
   final String? content;
-  final double? rate;
+  final String? rate;
   final int? numOfVotes;
-  const PostView(
-      {super.key,
-      this.imagePath,
-      this.content,
-      this.rate,
-      this.numOfVotes,
-      this.title,
-      });
+  // final Function(double lat, double lng) onPostTap;
+  const PostView({
+    super.key,
+    this.imagePath,
+    this.content,
+    this.rate,
+    this.numOfVotes,
+    this.title,
+    // required this.onPostTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +38,17 @@ class PostView extends StatelessWidget {
                   padding: const EdgeInsets.all(4),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: Image.network(
-                        imagePath!,
-                        fit: BoxFit.fill,
-                        width: double.infinity,
-                      )),
+                      child: imagePath!.startsWith('https')
+                          ? Image.network(
+                              imagePath!,
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                            )
+                          : Image.asset(
+                              imagePath!,
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                            )),
                 ),
               ),
               const SizedBox(
@@ -64,9 +72,13 @@ class PostView extends StatelessWidget {
               Row(
                 children: [
                   Icon(Icons.place, color: Colors.grey.shade700),
-                  Text(
-                    "Giza Necropolis, Al Haram, Giza Governorate,\n Greater Cairo, Egypt",
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                  GestureDetector(
+                    // onTap: onPostTap,
+                    child: Text(
+                      '',
+                      style:
+                          TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                    ),
                   )
                 ],
               ),

@@ -38,26 +38,61 @@ class _TimelineScreenState extends State<TimelineScreen> {
     });
 
     try {
-
       final cairoData = await _apiCaller.fetchCairoData();
+      List placeInfo = [];
+
+      //This stores the xids(a unique ID for each place that shows more details about the place)
+      List xIds = [];
+      for (var xid in cairoData['features']) {
+        if (xid['properties']?['xid'] != null) {
+          xIds.add(xid['properties']['xid']);
+        }
+      }
+
+      //This is calling the api endpoint that gets more details about the place
+      //This stores the data of each place in the placeInfo list
+      for (var xid in xIds) {
+        try {
+          var data = await _apiCaller.fetchPlaceInfo(xid);
+          placeInfo.add(data);
+        } catch (e) {
+          print("Couldn't fetch data: $e");
+          placeInfo.add(null);
+        }
+      }
 
       if (cairoData != null && cairoData['features'] is List) {
         final features = cairoData['features'] as List;
 
-        final mappedTourismPosts = features.map((feature) {
-          return {
-            "title": feature['properties']['name'] ?? 'Unnamed Place',
-            "imagePath": 'assets/images/Pyramids.png',
-            "rate": (feature['properties']['rate'] ?? 0.0),
-            "numOfVotes": 0,
-            "lat": feature['geometry']['coordinates'][1],
-            "lng": feature['geometry']['coordinates'][0],
-            "content": "Description not loaded yet."
-          };
-          index++;
+        final mappedTourismPosts = [];
+        for (int i = 0; i < features.length; i++) {
+          String description = "Description not available at the moment";
+          String image =
+              'assets/images/Missing-Image.png';
+          String rating = '';
+          if (i < placeInfo.length && placeInfo[i] != null) {
+            var details = placeInfo[i];
+            description = details['wikipedia_extracts']?['text'] ??
+                "Description not available";
+            if (details['image'] != null && details['image'] is String) {
+              image = details['image'] ??
+                  'https://upload.wikimedia.org/wikipedia/commons/3/33/Image-missing.svg';
+            }
+            if (details['rate'] != null) {
+              rating = details['rate'] ?? '0.0';
+            }
+          }
 
-          return post;
-        }).toList();
+          mappedTourismPosts.add({
+            "title": features[i]['properties']['name'] ?? 'Unnamed Place',
+            "imagePath": image,
+            "rate": rating,
+            "numOfVotes": 0,
+            "lat": features[i]['geometry']['coordinates'][1],
+            "lng": features[i]['geometry']['coordinates'][0],
+            "content": description,
+          });
+        }
 
         setState(() {
           tourismPosts = mappedTourismPosts;
@@ -196,7 +231,6 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 children: [
                   TourismView(
                     tourismPosts: tourismPosts,
-                    onPostTap: _navigateToMap, // callback
                   ),
                   ServicesView(
                     servicesPosts: servicesPosts,
