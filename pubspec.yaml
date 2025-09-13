@@ -25,6 +25,9 @@ dependencies:
   # 🌍 Open maps directly
   url_launcher: ^6.3.0
 
+  # Providers
+  provider: ^6.1.5+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

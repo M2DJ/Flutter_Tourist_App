@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_governate_app/Intro/splash_screen.dart';
+import 'package:my_governate_app/provider/state_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyGovernate());
+  runApp(
+    ChangeNotifierProvider<StateProvider>(
+      create: (_) => StateProvider(),
+      child: const MyGovernate(),
+    ),
+  );
 }
 
 class MyGovernate extends StatelessWidget {
