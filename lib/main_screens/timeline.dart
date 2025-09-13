@@ -26,6 +26,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   @override
   void initState() {
     super.initState();
+
     _loadData();
   }
 
@@ -37,6 +38,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
     });
 
     try {
+
       final cairoData = await _apiCaller.fetchCairoData();
 
       if (cairoData != null && cairoData['features'] is List) {
@@ -52,6 +54,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
             "lng": feature['geometry']['coordinates'][0],
             "content": "Description not loaded yet."
           };
+          index++;
+
+          return post;
         }).toList();
 
         setState(() {

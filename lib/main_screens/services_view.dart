@@ -18,6 +18,7 @@ class ServicesView extends StatelessWidget {
       itemCount: servicesPosts.length,
       itemBuilder: (context, index) {
         final post = servicesPosts[index];
+
         return GestureDetector(
           onTap: () => onPostTap(post["lat"], post["lng"]),
           child: PostModel(
@@ -27,6 +28,7 @@ class ServicesView extends StatelessWidget {
             rate: post["rate"] ?? '',
             content: post["content"] ?? '',
           ),
+
         );
       },
     );

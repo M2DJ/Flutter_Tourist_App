@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:my_governate_app/main_screens/post_view.dart';
 import 'package:my_governate_app/widgets/voting_row.dart';
 
-
 class PostModel extends StatelessWidget {
   final String? title;
   final String? imagePath;
   final double? rate;
   final int? numOfVotes;
   final String? content;
+  // final Function(dynamic) onPostTap;
 
   const PostModel(
       {super.key,
@@ -16,7 +16,9 @@ class PostModel extends StatelessWidget {
       this.imagePath,
       this.rate,
       this.numOfVotes,
-      this.content});
+      this.content,
+      // required this.onPostTap
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class PostModel extends StatelessWidget {
                         rate: rate,
                         title: title!,
                         content: content!,
+                        // onPostTap: onPostTap,
                       );
                     },
                   ));
