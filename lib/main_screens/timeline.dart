@@ -343,17 +343,38 @@ class _TimelineScreenState extends State<TimelineScreen> {
             Expanded(
               child: TabBarView(
                 children: [
-                  TourismView(
-                    tourismPosts: tourismPosts,
-                  ),
-                  ServicesView(
-                    servicesPosts: servicesPosts,
-                    onPostTap: _navigateToMap,
-                  ),
-                  TrafficsView(
-                    trafficsPosts: trafficsPosts,
-                    onPostTap: _navigateToMap,
-                  ),
+                  tourismPosts.isEmpty
+                      ? const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text('No data availible at the moment')],
+                          ),
+                        )
+                      : TourismView(
+                          tourismPosts: tourismPosts,
+                        ),
+                  servicesPosts.isEmpty
+                      ? const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text('No data availible at the moment')],
+                          ),
+                        )
+                      : ServicesView(
+                          servicesPosts: servicesPosts,
+                          onPostTap: _navigateToMap,
+                        ),
+                  trafficsPosts.isEmpty
+                      ? const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text('No data availible at the moment')],
+                          ),
+                        )
+                      : TrafficsView(
+                          trafficsPosts: trafficsPosts,
+                          onPostTap: _navigateToMap,
+                        ),
                 ],
               ),
             ),
