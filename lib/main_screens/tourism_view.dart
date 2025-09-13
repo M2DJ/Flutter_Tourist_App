@@ -5,11 +5,11 @@ class TourismView extends StatelessWidget {
   const TourismView({
     super.key,
     required this.tourismPosts,
-    // required this.onPostTap,
+    required this.onPostTap,
   });
 
   final List<dynamic> tourismPosts;
-  // final Function(String) onPostTap;
+  final Function(double lat, double lng) onPostTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,15 @@ class TourismView extends StatelessWidget {
       itemCount: tourismPosts.length,
       itemBuilder: (context, index) {
         final post = tourismPosts[index];
-        return PostModel(
-          title: post["title"] ?? '',
-          imagePath: post["imagePath"] ?? '',
-          numOfVotes: post["numOfVotes"] ?? '',
-          rate: post["rate"] ?? '',
-          content: post["content"] ?? '',
-          // onPostTap: () => onPostTap(index, p),
+        return GestureDetector(
+          onTap: () => onPostTap(post["lat"], post["lng"]),
+          child: PostModel(
+            title: post["title"] ?? '',
+            imagePath: post["imagePath"] ?? '',
+            numOfVotes: post["numOfVotes"] ?? '',
+            rate: post["rate"] ?? '',
+            content: post["content"] ?? '',
+          ),
         );
       },
     );

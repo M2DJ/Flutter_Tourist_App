@@ -4,6 +4,7 @@ import 'package:my_governate_app/main_screens/tourism_view.dart';
 import 'package:my_governate_app/main_screens/traffics_view.dart';
 import 'package:my_governate_app/services/api.dart';
 import 'package:my_governate_app/widgets/custom_tab.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TimelineScreen extends StatefulWidget {
   const TimelineScreen({super.key});
@@ -16,65 +17,42 @@ class _TimelineScreenState extends State<TimelineScreen> {
   final OpenTriMapsCalls _apiCaller = OpenTriMapsCalls();
 
   bool _isLoading = true;
-
   String? _errorMessage;
 
+  List tourismPosts = [];
+  List servicesPosts = [];
+  List trafficsPosts = [];
+
+  @override
   void initState() {
     super.initState();
 
-    _loadPlaceData();
+    _loadData();
   }
 
-  Future _loadPlaceData() async {
+  /// Loads data from API and sets up posts
+  Future<void> _loadData() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      //This is for calling the API
-      var cairoTourismData = await _apiCaller.fetchCairoData();
-      final List cairoXid = [];
-      
-      final List<Map> cairoContent = [];
 
-      //This is for adding every xid of every place in cairo into a List
-      for (var xid in cairoTourismData['features']) {
-        cairoXid.add(xid['properties']['xid']);
-      }
+      final cairoData = await _apiCaller.fetchCairoData();
 
-      for (var xid in cairoXid) {
-        try {
-          var content = await _apiCaller.fetchStateInfo(xid);
-          cairoContent.add(content);
-        } catch (e) {
-          print(e);
-          cairoContent.add({"text": 'No description available'});
-        }
-      }
+      if (cairoData != null && cairoData['features'] is List) {
+        final features = cairoData['features'] as List;
 
-      if (cairoTourismData != null && cairoTourismData['features'] is List) {
-        List features = cairoTourismData['features'];
-        List content = [];
-        for (var place in cairoContent) {
-          if (place['wikipedia_extracts'] != null) {
-            content.add(place['wikipedia_extracts']['text']);
-          } else {
-            content.add("No description available.");
-          }
-        }
-
-        int index = 0;
-        List mappedTourismPosts = features.map((feature) {
-          var post = {
+        final mappedTourismPosts = features.map((feature) {
+          return {
             "title": feature['properties']['name'] ?? 'Unnamed Place',
             "imagePath": 'assets/images/Pyramids.png',
             "rate": (feature['properties']['rate'] ?? 0.0),
             "numOfVotes": 0,
-            "content": index < content.length
-                ? content[index]
-                : "No description available",
-            "xid": feature['properties']['xid'],
+            "lat": feature['geometry']['coordinates'][1],
+            "lng": feature['geometry']['coordinates'][0],
+            "content": "Description not loaded yet."
           };
           index++;
 
@@ -85,10 +63,12 @@ class _TimelineScreenState extends State<TimelineScreen> {
           tourismPosts = mappedTourismPosts;
           servicesPosts = [
             {
-              "title": "Takeaway restaurent",
+              "title": "Takeaway restaurant",
               "imagePath": "assets/images/restaurant.png",
               "rate": 2.1,
               "numOfVotes": 40,
+              "lat": 30.056,
+              "lng": 31.234,
               "content": "content"
             },
             {
@@ -96,6 +76,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
               "imagePath": "assets/images/little_shop.jpeg",
               "rate": 2.99,
               "numOfVotes": 42,
+              "lat": 30.066,
+              "lng": 31.220,
               "content": "content"
             },
           ];
@@ -105,86 +87,66 @@ class _TimelineScreenState extends State<TimelineScreen> {
               "imagePath": "assets/images/ramsis.png",
               "rate": 4.7,
               "numOfVotes": 50,
+              "lat": 30.061,
+              "lng": 31.246,
               "content": "content"
             },
             {
-              "title": "Balady Cafe",
+              "title": "Traffic Point",
               "imagePath": "assets/images/little_shop.jpeg",
               "rate": 4.7,
               "numOfVotes": 10,
+              "lat": 30.051,
+              "lng": 31.210,
               "content": "content"
             },
           ];
           _isLoading = false;
         });
       } else {
-        print('Data format is incorrect or features is not a list');
         throw Exception('Data format is incorrect');
       }
-    } on Exception catch (e) {
+    } catch (e) {
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Could not load attractions. Tap to retry';
+        _errorMessage = 'Could not load attractions. Tap to retry.';
       });
-      print(e);
+      debugPrint('Error loading data: $e');
     }
   }
 
-  List tourismPosts = [];
-  List servicesPosts = [
-    // {
-    //   "title": "Takeaway restaurent",
-    //   "imagePath": "assets/images/restaurant.png",
-    //   "rate": 2.1,
-    //   "numOfVotes": 40,
-    //   "content": "content"
-    // },
-    // {
-    //   "title": "Balady Cafe",
-    //   "imagePath": "assets/images/little_shop.jpeg",
-    //   "rate": 2.99,
-    //   "numOfVotes": 42,
-    //   "content": "content"
-    // },
-  ];
-  List trafficsPosts = [
-    // {
-    //   "title": "Ramsis station",
-    //   "imagePath": "assets/images/ramsis.png",
-    //   "rate": 4.7,
-    //   "numOfVotes": 50,
-    //   "content": "content"
-    // },
-    // {
-    //   "title": "Balady Cafe",
-    //   "imagePath": "assets/images/little_shop.jpeg",
-    //   "rate": 4.7,
-    //   "numOfVotes": 10,
-    //   "content": "content"
-    // },
-  ];
+  /// Opens Maps with coordinates
+  void _navigateToMap(double lat, double lng) async {
+    final Uri url =
+        Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open the map.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    //To show a loading indicator when fething the data
     if (_isLoading) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: Center(child: CircularProgressIndicator()),
       );
     }
 
-    //To show the error message if there is any
     if (_errorMessage != null) {
       return Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(_errorMessage!),
-            IconButton(
-                onPressed: _loadPlaceData, icon: const Icon(Icons.refresh)),
-          ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(_errorMessage!),
+              const SizedBox(height: 10),
+              IconButton(onPressed: _loadData, icon: const Icon(Icons.refresh)),
+            ],
+          ),
         ),
       );
     }
@@ -196,6 +158,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -207,8 +170,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 ],
               ),
             ),
+            // Tabs
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              margin: EdgeInsets.zero,
               child: TabBar(
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.black,
@@ -226,12 +190,22 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 ],
               ),
             ),
+            // Tab Views
             Expanded(
               child: TabBarView(
                 children: [
-                  TourismView(tourismPosts: tourismPosts),
-                  ServicesView(servicesPosts: servicesPosts),
-                  TrafficsView(trafficsPosts: trafficsPosts),
+                  TourismView(
+                    tourismPosts: tourismPosts,
+                    onPostTap: _navigateToMap, // callback
+                  ),
+                  ServicesView(
+                    servicesPosts: servicesPosts,
+                    onPostTap: _navigateToMap,
+                  ),
+                  TrafficsView(
+                    trafficsPosts: trafficsPosts,
+                    onPostTap: _navigateToMap,
+                  ),
                 ],
               ),
             ),
