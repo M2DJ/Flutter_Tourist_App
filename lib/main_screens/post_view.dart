@@ -19,7 +19,7 @@ class PostView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -51,7 +51,7 @@ class PostView extends StatelessWidget {
               ),
               Text(
                 title!,
-                style: TextStyle(fontSize: 23),
+                style: const TextStyle(fontSize: 23),
               ),
               Text(
                 content!,
@@ -73,7 +73,7 @@ class PostView extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back_ios))
+                  icon: const Icon(Icons.arrow_back_ios))
             ],
           ),
         ),

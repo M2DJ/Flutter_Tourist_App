@@ -4,7 +4,6 @@ import 'package:my_governate_app/Login%20&%20Register/signin.dart';
 import 'package:my_governate_app/Login%20&%20Register/signup.dart';
 import 'package:my_governate_app/app_styles.dart';
 
-
 class GovernmentSelectionScreen extends StatefulWidget {
   const GovernmentSelectionScreen({super.key});
 
@@ -35,7 +34,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Image.asset(
                   'assets/images/image 28.png',
                   height: 30,
@@ -45,7 +44,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
                 Text(
                   "MyGov",
                   style: GoogleFonts.inter(
-                    color: Color(0xFF3174F0),
+                    color: const Color(0xFF3174F0),
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -98,7 +97,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
                 });
               },
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             CustomButton(
               text: "Sign In",
               size: const Size(327, 48),
@@ -112,7 +111,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
               borderRadius: 10,
             ),
 
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             CustomButton(
               text: "Sign Up",
               size: const Size(327, 48),

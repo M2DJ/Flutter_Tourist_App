@@ -48,16 +48,16 @@ class _SigninState extends State<Signin> {
                     fontSize: 28,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   "Please sign in to continue our app",
                   style: GoogleFonts.inter(
-                    color: Color(0xff7D848D),
+                    color: const Color(0xff7D848D),
                     fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Form(
                   key: _formKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -83,9 +83,7 @@ class _SigninState extends State<Signin> {
                             return null;
                           },
                           decoration: AppStyles.inputDecoration(
-                            hintText: 
-                              "www.uihut@gmail.com",
-                             
+                            hintText: "www.uihut@gmail.com",
                           ),
                         ),
                       ),
@@ -143,22 +141,22 @@ class _SigninState extends State<Signin> {
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF0D6EFD),
+                          color: const Color(0xFF0D6EFD),
                           fontStyle: FontStyle.normal,
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomButton(
                   text: "Sign In",
-                  size: Size(327, 48),
+                  size: const Size(327, 48),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) {
-                          return HomePage();
+                          return const HomePage();
                         },
                       ));
                     }
@@ -166,7 +164,7 @@ class _SigninState extends State<Signin> {
                   textSize: 16,
                   borderRadius: 10,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -174,7 +172,7 @@ class _SigninState extends State<Signin> {
                       "Don't have an account?",
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color: Color(0xff707B81),
+                        color: const Color(0xff707B81),
                       ),
                     ),
                     TextButton(
@@ -198,15 +196,15 @@ class _SigninState extends State<Signin> {
                     ),
                   ],
                 ),
-                SizedBox(height: 3),
+                const SizedBox(height: 3),
                 Text(
                   "Or Connect ",
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color: Color(0xff707B81),
+                    color: const Color(0xff707B81),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -221,7 +219,7 @@ class _SigninState extends State<Signin> {
                     const SizedBox(width: 5),
 
                     // Facebook icon
-                    SocialCircle(
+                    const SocialCircle(
                       child: FaIcon(
                         FontAwesomeIcons.facebookF,
                         color: Color(0xff3D4DA6),

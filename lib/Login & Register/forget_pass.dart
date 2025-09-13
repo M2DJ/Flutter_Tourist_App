@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_governate_app/Login%20&%20Register/pop_out.dart';
 import 'package:my_governate_app/app_styles.dart';
 
-
 class ForgetPass extends StatefulWidget {
   const ForgetPass({super.key});
 
@@ -32,7 +31,7 @@ class _ForgetPassState extends State<ForgetPass> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               const Text(
                 "Forget Password",
                 style: TextStyle(
@@ -45,13 +44,12 @@ class _ForgetPassState extends State<ForgetPass> {
               Text(
                 "Enter your email account to reset  your password",
                 style: GoogleFonts.inter(
-                  color: Color(0xff7D848D),
+                  color: const Color(0xff7D848D),
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 50),
-
               Form(
                 key: _formKey,
                 child: SizedBox(
@@ -70,15 +68,12 @@ class _ForgetPassState extends State<ForgetPass> {
                       return null;
                     },
                     decoration: AppStyles.inputDecoration(
-                      hintText: 
-                        "www.uihut@gmail.com",
-                        
+                      hintText: "www.uihut@gmail.com",
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 50),
-
+              const SizedBox(height: 50),
               CustomButton(
                 text: "Reset Password",
                 size: const Size(327, 48),

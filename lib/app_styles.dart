@@ -80,18 +80,16 @@ class AppStyles {
   static InputDecoration inputDecoration({
     Widget? suffixIcon,
     String? hintText,
-
     Widget? prefixIcon,
   }) {
     return InputDecoration(
       filled: true,
-      fillColor: Color(0xffF7F7F9),
+      fillColor: const Color(0xffF7F7F9),
       hintText: hintText,
       hintStyle: GoogleFonts.inter(
-        color: Color.fromARGB(255, 180, 180, 180),
+        color: const Color.fromARGB(255, 180, 180, 180),
         fontSize: 14,
       ),
-
       enabledBorder: const OutlineInputBorder(
         borderSide: BorderSide(color: Color(0xFFF7F7F9)),
       ),
