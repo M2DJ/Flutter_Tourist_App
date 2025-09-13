@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         radius: 17,
                         child: Image.asset("assets/images/myProfile.png"),
                       ),
-                      Text(
+                      const Text(
                         "Ahmed Ezz",
                         style: TextStyle(fontWeight: FontWeight.w500),
                       )

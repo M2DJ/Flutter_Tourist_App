@@ -42,7 +42,7 @@ class _VerificationState extends State<Verification> {
               Text(
                 "Please check your email www.uihut@gmail.com \n to see the verification code",
                 style: GoogleFonts.inter(
-                  color: Color(0xff7D848D),
+                  color: const Color(0xff7D848D),
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
@@ -60,7 +60,6 @@ class _VerificationState extends State<Verification> {
                 ),
               ),
               const SizedBox(height: 30),
-
               Form(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +67,6 @@ class _VerificationState extends State<Verification> {
                     SizedBox(
                       height: 68,
                       width: 68,
-
                       child: TextFormField(
                         decoration: AppStyles.inputDecoration(),
                         style: Theme.of(context).textTheme.headlineLarge,
@@ -83,7 +81,6 @@ class _VerificationState extends State<Verification> {
                     SizedBox(
                       height: 68,
                       width: 68,
-
                       child: TextFormField(
                         decoration: AppStyles.inputDecoration(),
                         style: Theme.of(context).textTheme.headlineLarge,
@@ -98,7 +95,6 @@ class _VerificationState extends State<Verification> {
                     SizedBox(
                       height: 68,
                       width: 68,
-
                       child: TextFormField(
                         decoration: AppStyles.inputDecoration(),
                         style: Theme.of(context).textTheme.headlineLarge,
@@ -113,7 +109,6 @@ class _VerificationState extends State<Verification> {
                     SizedBox(
                       height: 68,
                       width: 68,
-
                       child: TextFormField(
                         cursorColor: Colors.black,
                         decoration: AppStyles.inputDecoration(),
@@ -129,16 +124,15 @@ class _VerificationState extends State<Verification> {
                   ],
                 ),
               ),
-
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               CustomButton(
                 text: "Verify",
                 textSize: 16,
-                size: Size(327, 48),
+                size: const Size(327, 48),
                 borderRadius: 10,
                 onPressed: () {},
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -147,7 +141,7 @@ class _VerificationState extends State<Verification> {
                     child: Text(
                       "Reset Code",
                       style: GoogleFonts.inter(
-                        color: Color(0xff7D848D),
+                        color: const Color(0xff7D848D),
                         fontSize: 15,
                       ),
                     ),
@@ -155,7 +149,7 @@ class _VerificationState extends State<Verification> {
                   Text(
                     "0:50",
                     style: GoogleFonts.inter(
-                      color: Color(0xff7D848D),
+                      color: const Color(0xff7D848D),
                       fontSize: 15,
                     ),
                   ),

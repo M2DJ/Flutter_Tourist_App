@@ -25,17 +25,17 @@ class CustomDrawer extends StatelessWidget {
                     CircleAvatar(
                         radius: 45,
                         child: Image.asset("assets/images/myProfile.png")),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       "Ahmed Ezz",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 18),
                     ),
-                    Text(
+                    const Text(
                       "Damietta",
                       style: TextStyle(
                           color: Colors.white,

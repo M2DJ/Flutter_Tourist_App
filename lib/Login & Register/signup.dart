@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_governate_app/Login%20&%20Register/signin.dart';
 import 'package:my_governate_app/app_styles.dart';
 
-
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -45,16 +44,16 @@ class _SignUpState extends State<SignUp> {
                   fontSize: 28,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 "Please fill the details and create account",
                 style: GoogleFonts.inter(
-                  color: Color(0xff7D848D),
+                  color: const Color(0xff7D848D),
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Form(
                 key: _formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -76,13 +75,11 @@ class _SignUpState extends State<SignUp> {
                           return null;
                         },
                         decoration: AppStyles.inputDecoration(
-                          hintText: 
-                            "Leonardo Smith",
-                           
+                          hintText: "Leonardo Smith",
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // Email
                     SizedBox(
                       width: 335,
@@ -100,13 +97,11 @@ class _SignUpState extends State<SignUp> {
                           return null;
                         },
                         decoration: AppStyles.inputDecoration(
-                          hintText:
-                            "www.uihut@gmail.com",
-                            
+                          hintText: "www.uihut@gmail.com",
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // Password
                     SizedBox(
                       width: 335,
@@ -144,11 +139,10 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
               ),
-
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               CustomButton(
                 text: "Sign Up",
-                size: Size(327, 48),
+                size: const Size(327, 48),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     emailController.clear();
@@ -158,9 +152,7 @@ class _SignUpState extends State<SignUp> {
                 textSize: 16,
                 borderRadius: 10,
               ),
-
-              SizedBox(height: 10),
-
+              const SizedBox(height: 10),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -168,7 +160,7 @@ class _SignUpState extends State<SignUp> {
                     "Already have an account",
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: Color(0xff707B81),
+                      color: const Color(0xff707B81),
                     ),
                   ),
                   TextButton(
@@ -190,15 +182,15 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
-              SizedBox(height: 3),
+              const SizedBox(height: 3),
               Text(
                 "Or Connect ",
                 style: GoogleFonts.inter(
                   fontSize: 14,
-                  color: Color(0xff707B81),
+                  color: const Color(0xff707B81),
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -213,7 +205,7 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(width: 5),
 
                   // Facebook icon
-                  SocialCircle(
+                  const SocialCircle(
                     child: FaIcon(
                       FontAwesomeIcons.facebookF,
                       color: Color(0xff3D4DA6),
