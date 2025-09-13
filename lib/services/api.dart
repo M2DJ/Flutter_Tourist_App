@@ -98,5 +98,5 @@ class OpenTriMapsCalls {
         "lat": 30.0478
       }
     }
-  */ 
+  */
 }

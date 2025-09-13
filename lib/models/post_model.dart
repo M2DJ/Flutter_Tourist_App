@@ -49,7 +49,7 @@ class PostModel extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
                       return PostView(
-                        imagePath: imagePath! ?? '',
+                        imagePath: imagePath ?? '',
                         numOfVotes: numOfVotes,
                         rate: rate,
                         title: title!,
