@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_governate_app/Login%20&%20Register/signin.dart';
 import 'package:my_governate_app/Login%20&%20Register/signup.dart';
 import 'package:my_governate_app/app_styles.dart';
+import 'package:my_governate_app/provider/state_provider.dart';
+import 'package:provider/provider.dart';
 
 class GovernmentSelectionScreen extends StatefulWidget {
   const GovernmentSelectionScreen({super.key});
@@ -25,6 +27,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.read<StateProvider>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -94,6 +97,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedGovernment = value;
+                  state.theState(selectedGovernment!);
                 });
               },
             ),

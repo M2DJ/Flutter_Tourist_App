@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:my_governate_app/main_screens/services_view.dart';
 import 'package:my_governate_app/main_screens/tourism_view.dart';
 import 'package:my_governate_app/main_screens/traffics_view.dart';
+import 'package:my_governate_app/provider/state_provider.dart';
 import 'package:my_governate_app/services/api.dart';
 import 'package:my_governate_app/widgets/custom_tab.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TimelineScreen extends StatefulWidget {
@@ -14,8 +16,6 @@ class TimelineScreen extends StatefulWidget {
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
-  final OpenTriMapsCalls _apiCaller = OpenTriMapsCalls();
-
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -26,7 +26,6 @@ class _TimelineScreenState extends State<TimelineScreen> {
   @override
   void initState() {
     super.initState();
-
     _loadTourismData();
     _loadServicesData();
     _loadTrafficData();
@@ -34,13 +33,16 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
   /// Loads data from API and sets up posts
   Future<void> _loadTourismData() async {
+    final stateProvider = Provider.of<StateProvider>(context, listen: false);
+    OpenTriMapsCalls _apiCaller = OpenTriMapsCalls(stateProvider);
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      final tourismData = await _apiCaller.fetchCairoData();
+      final tourismData = await _apiCaller.fetchData(state: stateProvider.state);
       List tourismInfo = [];
 
       //This stores the xids(a unique ID for each place that shows more details about the place)
@@ -53,7 +55,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
       //This is calling the api endpoint that gets more details about the place
       //This stores the data of each place in the placeInfo list
-      for (var xid in xIds.sublist(0, 5)) {
+      for (var xid in xIds) {
         try {
           var data = await _apiCaller.fetchPlaceInfo(xid);
           tourismInfo.add(data);
@@ -112,6 +114,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
   }
 
   Future<void> _loadServicesData() async {
+    final stateProvider = Provider.of<StateProvider>(context, listen: false);
+    OpenTriMapsCalls _apiCaller = OpenTriMapsCalls(stateProvider);
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -119,7 +124,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
     try {
       //This api call fetches all the resaurants and cafes
-      final servicesData = await _apiCaller.fetchCairoData('foods');
+      final servicesData = await _apiCaller.fetchData(state: stateProvider.state, kindsFilter: 'foods');
       List servicesInfo = [];
 
       List xIds = [];
@@ -188,6 +193,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
   }
 
   Future<void> _loadTrafficData() async {
+    final stateProvider = Provider.of<StateProvider>(context, listen: false);
+    OpenTriMapsCalls _apiCaller = OpenTriMapsCalls(stateProvider);
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -195,7 +203,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
     try {
       //This api call fetches all the train and bus stations
-      final trafficData = await _apiCaller.fetchCairoData();
+      final trafficData = await _apiCaller.fetchData(state: stateProvider.state, kindsFilter: 'transport');
       List trafficInfo = [];
 
       List xIds = [];

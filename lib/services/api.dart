@@ -1,17 +1,48 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:my_governate_app/provider/state_provider.dart';
 
 //Used OpenTriMap API cause the Google API required a billing account(I don't have one lol)
 class OpenTriMapsCalls {
+  late StateProvider state;
+
+  OpenTriMapsCalls(this.state);
+
   //for the api calls, It needs an API key
-  Future fetchCairoData([String kindsFilter = '']) async {
+  Future fetchData({required String state, String kindsFilter = ""}) async {
+    late double lat;
+    late double lon;
+
+    switch (state) {
+      case "Cairo":
+        lon = 31.2357;
+        lat = 30.0444;
+        break;
+      case "Alexandria":
+        lon = 29.9187;
+        lat = 31.2001;
+        break;
+      case "Giza":
+        lon = 30.0131;
+        lat = 31.2089;
+        break;
+      case "Aswan":
+        lon = 24.0889;
+        lat = 32.8998;
+        break;
+      case "Luxor":
+        lon = 25.6872;
+        lat = 32.6396;
+        break;
+    }
+
     final url = Uri.https(
       'api.opentripmap.com',
       '/0.1/en/places/radius',
       {
         "radius": "10000",
-        "lon": "31.2357",
-        "lat": "30.0444",
+        "lon": lon.toString(),
+        "lat": lat.toString(),
         "rate": "3",
         if (kindsFilter.isNotEmpty) "kinds": kindsFilter,
         "apikey": "5ae2e3f221c38a28845f05b67fab4081ee576015481168cceca5fa5b"
