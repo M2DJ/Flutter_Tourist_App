@@ -2,65 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:my_governate_app/main_screens/services_view.dart';
 import 'package:my_governate_app/main_screens/tourism_view.dart';
 import 'package:my_governate_app/main_screens/traffics_view.dart';
+import 'package:my_governate_app/providers/data_provider.dart';
+import 'package:my_governate_app/providers/state_provider.dart';
 import 'package:my_governate_app/widgets/custom_tab.dart';
+import 'package:provider/provider.dart';
 
-
-class TimelineScreen extends StatelessWidget {
+class TimelineScreen extends StatefulWidget {
   const TimelineScreen({super.key});
 
   @override
+  State<TimelineScreen> createState() => _TimelineScreenState();
+}
+
+class _TimelineScreenState extends State<TimelineScreen> {
+  late DataProvider dataProvider;
+  late StateProvider stateProvider;
+
+  @override
+  void initState() {
+    super.initState();
+
+    stateProvider = Provider.of<StateProvider>(context, listen: false);
+    dataProvider = Provider.of<DataProvider>(context, listen: false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Temporary static list
-    //replace this with data from API or state management later
-    final tourismPosts = [
-      {
-        "title": "Giza Pyramid",
-        "imagePath": "assets/images/Pyramids.png",
-        "rate": 4.7,
-        "numOfVotes": 40,
-        "content":
-            "The Pyramids of Giza are Egypt’s most iconic monuments and one of the world’s greatest historical treasures. Built over 4,500 years ago as royal tombs for the Pharaohs, they include the Great Pyramid of Khufu, the Pyramid of Khafre, and the smaller Pyramid of Menkaure. Together with the mysterious Sphinx, they stand as a symbol of ancient Egyptian civilization and continue to attract millions of visitors from around the globe."
-      },
-      {
-        "title": "Balady Cafe",
-        "imagePath": "assets/images/little_shop.jpeg",
-        "rate": 3.78,
-        "numOfVotes": 20,
-        "content": "content"
-      },
-    ];
-    final servicesPosts = [
-      {
-        "title": "Takeaway restaurent",
-        "imagePath": "assets/images/restaurant.png",
-        "rate": 2.1,
-        "numOfVotes": 40,
-        "content": "content"
-      },
-      {
-        "title": "Balady Cafe",
-        "imagePath": "assets/images/little_shop.jpeg",
-        "rate": 2.99,
-        "numOfVotes": 42,
-        "content": "content"
-      },
-    ];
-    final trafficsPosts = [
-      {
-        "title": "Ramsis station",
-        "imagePath": "assets/images/ramsis.png",
-        "rate": 4.7,
-        "numOfVotes": 50,
-        "content": "content"
-      },
-      {
-        "title": "Balady Cafe",
-        "imagePath": "assets/images/little_shop.jpeg",
-        "rate": 4.7,
-        "numOfVotes": 10,
-        "content": "content"
-      },
-    ];
+    final tourismPosts = dataProvider.getTourismPosts;
+    final servicesPosts = dataProvider.getServicesPosts;
+    final trafficsPosts = dataProvider.getTrafficPosts;
 
     return DefaultTabController(
       length: 3,
