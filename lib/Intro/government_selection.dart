@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_governate_app/Login%20&%20Register/signin.dart';
 import 'package:my_governate_app/Login%20&%20Register/signup.dart';
 import 'package:my_governate_app/app_styles.dart';
-
+import 'package:my_governate_app/providers/state_provider.dart';
+import 'package:provider/provider.dart';
 
 class GovernmentSelectionScreen extends StatefulWidget {
   const GovernmentSelectionScreen({super.key});
@@ -24,9 +25,9 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
   ];
   String? selectedGovernment;
 
-
   @override
   Widget build(BuildContext context) {
+    var stateProvider = context.watch<StateProvider>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -37,7 +38,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-             const    SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Image.asset(
                   'assets/images/image 28.png',
                   height: 30,
@@ -97,11 +98,12 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedGovernment = value;
+                  stateProvider.choosingState(selectedGovernment!);
                 });
               },
             ),
             const SizedBox(height: 25),
-          const  SizedBox(height: 15),
+            const SizedBox(height: 15),
             CustomButton(
               text: "Sign In",
               size: const Size(327, 48),
@@ -115,7 +117,7 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
               borderRadius: 10,
             ),
 
-          const SizedBox(height: 10),
+            const SizedBox(height: 10),
             CustomButton(
               text: "Sign Up",
               size: const Size(327, 48),
@@ -135,7 +137,6 @@ class _GovernmentSelectionScreenState extends State<GovernmentSelectionScreen> {
                     builder: (context) =>
                         SignUp(selectedCity: selectedGovernment!),
                   ),
-
                 );
               },
               textSize: 16,

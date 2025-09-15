@@ -7,7 +7,7 @@ class Post {
   final int likes;
   final List<String> comments;
   final String title;
-  final double? rate;
+  final String? rate;
   final int? numOfVotes;
 
   Post({

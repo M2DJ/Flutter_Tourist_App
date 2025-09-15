@@ -7,7 +7,7 @@ class TourismView extends StatelessWidget {
     required this.tourismPosts,
   });
 
-  final List<Map<String, dynamic>> tourismPosts;
+  final List tourismPosts;
 
   @override
   Widget build(BuildContext context) {
