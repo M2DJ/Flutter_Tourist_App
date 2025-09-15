@@ -9,4 +9,5 @@ class StateProvider extends ChangeNotifier {
   }
 
   String get getState => _state;
+  
 }

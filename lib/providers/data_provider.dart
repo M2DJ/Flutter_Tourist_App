@@ -204,4 +204,5 @@ class DataProvider extends ChangeNotifier {
   List get getTourismPosts => _tourismPosts;
   List get getServicesPosts => _servicesPosts;
   List get getTrafficPosts => _trafficsPosts;
+  
 }
