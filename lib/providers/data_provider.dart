@@ -4,33 +4,26 @@ import 'package:my_governate_app/services/api.dart';
 class DataProvider extends ChangeNotifier {
   final _apiCaller = OpenTriMapsCalls();
 
+  late var tourismData;
+  late var servicesData;
+  late var trafficData;
+  List tourismXid = [];
+  List servicesXid = [];
+  List trafficXid = [];
+
   final List _tourismPosts = [];
   final List _servicesPosts = [];
   final List _trafficsPosts = [];
 
   Future loadTourismData(String state) async {
     try {
-      final tourismData = await _apiCaller.fetchData(
+      tourismData = await _apiCaller.fetchData(
           state: state, kindsFilter: 'interesting_places');
-      List tourismInfo = [];
 
       //This stores the xids(a unique ID for each place that shows more details about the place)
-      List xIds = [];
       for (var xid in tourismData['features']) {
         if (xid['properties']?['xid'] != null) {
-          xIds.add(xid['properties']['xid']);
-        }
-      }
-
-      //This is calling the api endpoint that gets more details about the place
-      //This stores the data of each place in the placeInfo list
-      for (var xid in xIds) {
-        try {
-          var data = await _apiCaller.fetchPlaceInfo(xid);
-          tourismInfo.add(data);
-        } catch (e) {
-          print("Couldn't fetch data: $e");
-          tourismInfo.add(null);
+          tourismXid.add(xid['properties']['xid']);
         }
       }
 
@@ -39,30 +32,15 @@ class DataProvider extends ChangeNotifier {
 
         final mappedTourismPosts = [];
         for (int i = 0; i < features.length; i++) {
-          String description = "Description not available at the moment";
-          String image = 'assets/images/Missing-Image.png';
-          String rating = '';
-          if (i < tourismInfo.length && tourismInfo[i] != null) {
-            var details = tourismInfo[i];
-            description = details['wikipedia_extracts']?['text'] ??
-                "Description not available";
-            if (details['image'] != null && details['image'] is String) {
-              image = details['image'] ??
-                  'https://upload.wikimedia.org/wikipedia/commons/3/33/Image-missing.svg';
-            }
-            if (details['rate'] != null) {
-              rating = details['rate'] ?? '0.0';
-            }
-          }
-
           mappedTourismPosts.add({
+            "id": features[i]['properties']['xid'],
             "title": features[i]['properties']['name'] ?? 'Unnamed Place',
-            "imagePath": image,
-            "rate": rating,
-            "numOfVotes": 0,
+            // "imagePath": image,
+            // "rate": rating,
+            // "numOfVotes": 0,
             "lat": features[i]['geometry']['coordinates'][1],
             "lng": features[i]['geometry']['coordinates'][0],
-            "content": description,
+            // "content": description,
           });
         }
         _tourismPosts.addAll(mappedTourismPosts);
@@ -72,29 +50,38 @@ class DataProvider extends ChangeNotifier {
       print(e);
     }
   }
+
+  Future loadTourismInfo(var xid) async {
+    Map tourismInfo;
+
+    try {
+      tourismInfo = await _apiCaller.fetchPlaceInfo(xid);
+
+      final index = _tourismPosts.indexWhere((post) => post['id'] == xid);
+      if (index != -1) {
+        _tourismPosts[index]["imagePath"] =
+            tourismInfo['image'] ?? 'assets/images/Missing-image.png';
+        _tourismPosts[index]["rate"] = tourismInfo['rate'] ?? '0';
+        _tourismPosts[index]["numOfVotes"] = 0;
+        _tourismPosts[index]["content"] = tourismInfo['wikipedia_extract']
+                ?['text'] ??
+            "No description available at the moment";
+        notifyListeners();
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
   Future loadServicesData(String state) async {
     try {
-      final servicesData =
+      servicesData =
           await _apiCaller.fetchData(state: state, kindsFilter: 'foods');
-      List servicesInfo = [];
 
       //This stores the xids(a unique ID for each place that shows more details about the place)
-      List xIds = [];
       for (var xid in servicesData['features']) {
         if (xid['properties']?['xid'] != null) {
-          xIds.add(xid['properties']['xid']);
-        }
-      }
-
-      //This is calling the api endpoint that gets more details about the place
-      //This stores the data of each place in the placeInfo list
-      for (var xid in xIds) {
-        try {
-          var data = await _apiCaller.fetchPlaceInfo(xid);
-          servicesInfo.add(data);
-        } catch (e) {
-          print("Couldn't fetch data: $e");
-          servicesInfo.add(null);
+          servicesXid.add(xid['properties']['xid']);
         }
       }
 
@@ -103,30 +90,15 @@ class DataProvider extends ChangeNotifier {
 
         final mappedServicesPosts = [];
         for (int i = 0; i < features.length; i++) {
-          String description = "Description not available at the moment";
-          String image = 'assets/images/Missing-Image.png';
-          String rating = '';
-          if (i < servicesInfo.length && servicesInfo[i] != null) {
-            var details = servicesInfo[i];
-            description = details['wikipedia_extracts']?['text'] ??
-                "Description not available";
-            if (details['image'] != null && details['image'] is String) {
-              image = details['image'] ??
-                  'https://upload.wikimedia.org/wikipedia/commons/3/33/Image-missing.svg';
-            }
-            if (details['rate'] != null) {
-              rating = details['rate'] ?? '0.0';
-            }
-          }
-
           mappedServicesPosts.add({
+            "id": features[i]['properties']['xid'],
             "title": features[i]['properties']['name'] ?? 'Unnamed Place',
-            "imagePath": image,
-            "rate": rating,
-            "numOfVotes": 0,
+            // "imagePath": image,
+            // "rate": rating,
+            // "numOfVotes": 0,
             "lat": features[i]['geometry']['coordinates'][1],
             "lng": features[i]['geometry']['coordinates'][0],
-            "content": description,
+            // "content": description,
           });
         }
         _servicesPosts.addAll(mappedServicesPosts);
@@ -136,29 +108,37 @@ class DataProvider extends ChangeNotifier {
       print(e);
     }
   }
+
+  Future loadServicesInfo(var xid) async {
+    Map servicesInfo;
+
+    try {
+      servicesInfo = await _apiCaller.fetchPlaceInfo(xid);
+
+      final index = _servicesPosts.indexWhere((post) => post['id'] == xid);
+      if (index != -1) {
+        _servicesPosts[index]["imagePath"] =
+            servicesInfo['image'] ?? 'assets/images/Missing-image.png';
+        _servicesPosts[index]["rate"] = servicesInfo['rate'] ?? '0';
+        _servicesPosts[index]["numOfVotes"] = 0;
+        _servicesPosts[index]["content"] = servicesInfo['wikipedia_extract']
+                ?['text'] ??
+            "No description available at the moment";
+        notifyListeners();
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
   Future loadTrafficData(String state) async {
     try {
-      final trafficData =
+      trafficData =
           await _apiCaller.fetchData(state: state, kindsFilter: 'transport');
-      List trafficInfo = [];
 
-      //This stores the xids(a unique ID for each place that shows more details about the place)
-      List xIds = [];
       for (var xid in trafficData['features']) {
         if (xid['properties']?['xid'] != null) {
-          xIds.add(xid['properties']['xid']);
-        }
-      }
-
-      //This is calling the api endpoint that gets more details about the place
-      //This stores the data of each place in the placeInfo list
-      for (var xid in xIds) {
-        try {
-          var data = await _apiCaller.fetchPlaceInfo(xid);
-          trafficInfo.add(data);
-        } catch (e) {
-          print("Couldn't fetch data: $e");
-          trafficInfo.add(null);
+          trafficXid.add(xid['properties']['xid']);
         }
       }
 
@@ -167,30 +147,15 @@ class DataProvider extends ChangeNotifier {
 
         final mappedTrafficPosts = [];
         for (int i = 0; i < features.length; i++) {
-          String description = "Description not available at the moment";
-          String image = 'assets/images/Missing-Image.png';
-          String rating = '';
-          if (i < trafficInfo.length && trafficInfo[i] != null) {
-            var details = trafficInfo[i];
-            description = details['wikipedia_extracts']?['text'] ??
-                "Description not available";
-            if (details['image'] != null && details['image'] is String) {
-              image = details['image'] ??
-                  'https://upload.wikimedia.org/wikipedia/commons/3/33/Image-missing.svg';
-            }
-            if (details['rate'] != null) {
-              rating = details['rate'] ?? '0.0';
-            }
-          }
-
           mappedTrafficPosts.add({
+            "id": features[i]['properties']['xid'],
             "title": features[i]['properties']['name'] ?? 'Unnamed Place',
-            "imagePath": image,
-            "rate": rating,
+            // "imagePath": image,
+            // "rate": rating,
             "numOfVotes": 0,
             "lat": features[i]['geometry']['coordinates'][1],
             "lng": features[i]['geometry']['coordinates'][0],
-            "content": description,
+            // "content": description,
           });
         }
         _trafficsPosts.addAll(mappedTrafficPosts);
@@ -201,8 +166,29 @@ class DataProvider extends ChangeNotifier {
     }
   }
 
+  Future loadTrafficInfo(xid) async {
+    Map trafficInfo;
+
+    try {
+      trafficInfo = await _apiCaller.fetchPlaceInfo(xid);
+
+      final index = _trafficsPosts.indexWhere((post) => post['id'] == xid);
+      if (index != -1) {
+        _trafficsPosts[index]["imagePath"] =
+            trafficInfo['image'] ?? 'assets/images/Missing-image.png';
+        _trafficsPosts[index]["rate"] = trafficInfo['rate'] ?? '0';
+        _trafficsPosts[index]["numOfVotes"] = 0;
+        _trafficsPosts[index]["content"] = trafficInfo['wikipedia_extract']
+                ?['text'] ??
+            "No description available at the moment";
+        notifyListeners();
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
   List get getTourismPosts => _tourismPosts;
   List get getServicesPosts => _servicesPosts;
   List get getTrafficPosts => _trafficsPosts;
-
 }
