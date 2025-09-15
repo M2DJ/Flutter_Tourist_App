@@ -108,7 +108,8 @@ class OpenTriMapsCalls {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load data');
+      throw Exception(
+          "Failed to load data: ${response.statusCode} ${response.body}");
     }
   }
   /*
