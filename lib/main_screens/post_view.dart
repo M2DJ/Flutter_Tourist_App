@@ -7,7 +7,7 @@ class PostView extends StatelessWidget {
   final String? title;
   final String? imagePath;
   final String? content;
-  final double? rate;
+  final String? rate;
   final int? numOfVotes;
   const PostView(
       {super.key,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class VotingRow extends StatelessWidget {
   final int? numOfVotes;
-  final double? rate;
+  final String? rate;
   const VotingRow({
     super.key,
     required this.numOfVotes,
@@ -61,7 +61,7 @@ class VotingRow extends StatelessWidget {
                       color: Colors.yellow,
                       size: 23,
                     ),
-                    Text(rate!.toStringAsFixed(1)),
+                    Text(rate!),
                   ],
                 ),
               ),

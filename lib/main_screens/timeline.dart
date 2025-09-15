@@ -15,72 +15,151 @@ class TimelineScreen extends StatefulWidget {
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
-  late DataProvider dataProvider;
-  late StateProvider stateProvider;
+  bool loading = false;
 
   @override
   void initState() {
     super.initState();
 
-    stateProvider = Provider.of<StateProvider>(context, listen: false);
-    dataProvider = Provider.of<DataProvider>(context, listen: false);
+    loadTourismPosts();
+    loadServicesPosts();
+    loadTrafficPosts();
+  }
+
+  Future<void> loadTourismPosts() async {
+    setState(() {
+      loading = true;
+    });
+
+    final stateProvider = Provider.of<StateProvider>(context, listen: false);
+    final dataProvider = Provider.of<DataProvider>(context, listen: false);
+
+    await dataProvider.loadTourismData(stateProvider.getState);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  Future<void> loadServicesPosts() async {
+    setState(() {
+      loading = true;
+    });
+
+    final stateProvider = Provider.of<StateProvider>(context, listen: false);
+    final dataProvider = Provider.of<DataProvider>(context, listen: false);
+
+    await dataProvider.loadServicesData(stateProvider.getState);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
+  Future<void> loadTrafficPosts() async {
+    setState(() {
+      loading = true;
+    });
+
+    final stateProvider = Provider.of<StateProvider>(context, listen: false);
+    final dataProvider = Provider.of<DataProvider>(context, listen: false);
+
+    await dataProvider.loadTrafficData(stateProvider.getState);
+
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var dataProvider = context.watch<DataProvider>();
+
     final tourismPosts = dataProvider.getTourismPosts;
     final servicesPosts = dataProvider.getServicesPosts;
     final trafficsPosts = dataProvider.getTrafficPosts;
 
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
+    return loading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset("assets/images/Explore sentence.png"),
-                  const SizedBox(height: 10),
-                  const Divider(color: Color(0xffD4D6DD)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset("assets/images/Explore sentence.png"),
+                        const SizedBox(height: 10),
+                        const Divider(color: Color(0xffD4D6DD)),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                    child: TabBar(
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.black,
+                      dividerColor: Colors.transparent,
+                      labelPadding: EdgeInsets.zero,
+                      indicatorPadding: const EdgeInsets.symmetric(vertical: 5),
+                      indicator: BoxDecoration(
+                        color: const Color(0xff3174F0),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      tabs: const [
+                        CustomTab(text: "Tourism"),
+                        CustomTab(text: "Services"),
+                        CustomTab(text: "Traffics"),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        tourismPosts.isEmpty && loading == false
+                            ? const Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('No data is availble at the moment')
+                                  ],
+                                ),
+                              )
+                            : TourismView(tourismPosts: tourismPosts),
+                        servicesPosts.isEmpty && loading == false
+                            ? const Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('No data is availble at the moment')
+                                  ],
+                                ),
+                              )
+                            : ServicesView(servicesPosts: servicesPosts),
+                        trafficsPosts.isEmpty && loading == false
+                            ? const Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('No data is availble at the moment')
+                                  ],
+                                ),
+                              )
+                            : TrafficsView(trafficsPosts: trafficsPosts),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-              child: TabBar(
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.black,
-                dividerColor: Colors.transparent,
-                labelPadding: EdgeInsets.zero,
-                indicatorPadding: const EdgeInsets.symmetric(vertical: 5),
-                indicator: BoxDecoration(
-                  color: const Color(0xff3174F0),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                tabs: const [
-                  CustomTab(text: "Tourism"),
-                  CustomTab(text: "Services"),
-                  CustomTab(text: "Traffics"),
-                ],
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  TourismView(tourismPosts: tourismPosts),
-                  ServicesView(servicesPosts: servicesPosts),
-                  TrafficsView(trafficsPosts: trafficsPosts),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
