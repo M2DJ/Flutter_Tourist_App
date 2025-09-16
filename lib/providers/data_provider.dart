@@ -57,8 +57,6 @@ class DataProvider extends ChangeNotifier {
     try {
       tourismInfo = await _apiCaller.fetchPlaceInfo(xid);
 
-      print("Fetched tourism info for $xid: $tourismInfo");
-
       final index = _tourismPosts.indexWhere((post) => post['id'] == xid);
       if (index != -1) {
         final updatedPost = Map<String, dynamic>.from(_tourismPosts[index]);
@@ -74,8 +72,6 @@ class DataProvider extends ChangeNotifier {
         }
 
         _tourismPosts[index] = updatedPost;
-
-        print("Updated post: $_tourismPosts[index]");
         notifyListeners();
       }
     } on Exception catch (e) {
@@ -103,12 +99,12 @@ class DataProvider extends ChangeNotifier {
           mappedServicesPosts.add({
             "id": features[i]['properties']['xid'],
             "title": features[i]['properties']['name'] ?? 'Unnamed Place',
-            // "imagePath": image,
-            // "rate": rating,
-            // "numOfVotes": 0,
+            "imagePath": 'assets/images/Missing-image.png',
+            "rate": "0",
+            "numOfVotes": 0,
             "lat": features[i]['geometry']['coordinates'][1],
             "lng": features[i]['geometry']['coordinates'][0],
-            // "content": description,
+            "content": '',
           });
         }
         _servicesPosts.addAll(mappedServicesPosts);
@@ -127,13 +123,19 @@ class DataProvider extends ChangeNotifier {
 
       final index = _servicesPosts.indexWhere((post) => post['id'] == xid);
       if (index != -1) {
-        _servicesPosts[index]["imagePath"] =
-            servicesInfo['image'] ?? 'assets/images/Missing-image.png';
-        _servicesPosts[index]["rate"] = servicesInfo['rate'] ?? '0';
-        _servicesPosts[index]["numOfVotes"] = 0;
-        _servicesPosts[index]["content"] = servicesInfo['wikipedia_extracts']
-                ?['text'] ??
-            "No description available at the moment";
+        final updatedPost = Map<String, dynamic>.from(_tourismPosts[index]);
+
+        if (servicesInfo['image'] != null) {
+          updatedPost["imagePath"] = servicesInfo['image'];
+        }
+        if (servicesInfo['rate'] != null) {
+          updatedPost["rate"] = servicesInfo['rate'];
+        }
+        if (servicesInfo['wikipedia_extracts']?['text'] != null) {
+          updatedPost["content"] = servicesInfo['wikipedia_extracts']['text'];
+        }
+
+        _servicesPosts[index] = updatedPost;
         notifyListeners();
       }
     } on Exception catch (e) {
@@ -160,12 +162,12 @@ class DataProvider extends ChangeNotifier {
           mappedTrafficPosts.add({
             "id": features[i]['properties']['xid'],
             "title": features[i]['properties']['name'] ?? 'Unnamed Place',
-            // "imagePath": image,
-            // "rate": rating,
+            "imagePath": 'assets/images/Missing-image.png',
+            "rate": "0",
             "numOfVotes": 0,
             "lat": features[i]['geometry']['coordinates'][1],
             "lng": features[i]['geometry']['coordinates'][0],
-            // "content": description,
+            "content": '',
           });
         }
         _trafficsPosts.addAll(mappedTrafficPosts);
@@ -184,13 +186,19 @@ class DataProvider extends ChangeNotifier {
 
       final index = _trafficsPosts.indexWhere((post) => post['id'] == xid);
       if (index != -1) {
-        _trafficsPosts[index]["imagePath"] =
-            trafficInfo['image'] ?? 'assets/images/Missing-image.png';
-        _trafficsPosts[index]["rate"] = trafficInfo['rate'] ?? '0';
-        _trafficsPosts[index]["numOfVotes"] = 0;
-        _trafficsPosts[index]["content"] = trafficInfo['wikipedia_extracts']
-                ?['text'] ??
-            "No description available at the moment";
+         final updatedPost = Map<String, dynamic>.from(_tourismPosts[index]);
+
+        if (trafficInfo['image'] != null) {
+          updatedPost["imagePath"] = trafficInfo['image'];
+        }
+        if (trafficInfo['rate'] != null) {
+          updatedPost["rate"] = trafficInfo['rate'];
+        }
+        if (trafficInfo['wikipedia_extracts']?['text'] != null) {
+          updatedPost["content"] = trafficInfo['wikipedia_extracts']['text'];
+        }
+
+        _trafficsPosts[index] = updatedPost;
         notifyListeners();
       }
     } on Exception catch (e) {

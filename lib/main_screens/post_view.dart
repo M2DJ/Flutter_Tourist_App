@@ -16,8 +16,15 @@ class PostView extends StatelessWidget {
         .firstWhere((p) => p['id'] == xid, orElse: () => {});
 
     if (post.isEmpty) {
-      return const Scaffold(
-        body: Center(
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
+        ),
+        body: const Center(
           child: Text("Post not found"),
         ),
       );
@@ -58,7 +65,9 @@ class PostView extends StatelessWidget {
               const SizedBox(
                 height: 14,
               ),
-              VotingRow(numOfVotes: post["numOfVotes"] ?? '0', rate: post['rate'].toString()),
+              VotingRow(
+                  numOfVotes: post["numOfVotes"] ?? '0',
+                  rate: post['rate'].toString()),
               const SizedBox(
                 height: 10,
               ),

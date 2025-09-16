@@ -35,8 +35,6 @@ class _TourismViewState extends State<TourismView> {
             });
             context.read<DataProvider>().loadTourismInfo(post['id']);
 
-            print('This is supposed to get data');
-
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -48,13 +46,6 @@ class _TourismViewState extends State<TourismView> {
                         ),
                       )
                     : 
-                    // PostView(
-                    //     imagePath: post["imagePath"],
-                    //     numOfVotes: post["numOfVotes"],
-                    //     rate: post["rate"],
-                    //     title: post["title"],
-                    //     content: post["content"],
-                    //   ),
                     PostView(xid: post['id'])
               ),
             );

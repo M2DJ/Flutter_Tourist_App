@@ -42,22 +42,6 @@ class PostModel extends StatelessWidget {
                   ),
                 ],
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     Navigator.push(context, MaterialPageRoute(
-              //       builder: (context) {
-              //         return PostView(
-              //           imagePath: imagePath,
-              //           numOfVotes: numOfVotes,
-              //           rate: rate,
-              //           title: title,
-              //           content: content,
-              //         );
-              //       },
-              //     ));
-              //   },
-              //   child: 
-              // ),
               SizedBox(
                   height: 200,
                   width: MediaQuery.sizeOf(context).width * 0.9,
