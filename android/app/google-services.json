@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "519306226072",
+    "project_id": "my-gove",
+    "storage_bucket": "my-gove.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519306226072:android:f5a6033310bfa18d19e3ed",
+        "android_client_info": {
+          "package_name": "com.example.my_governate_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519306226072-dt0p0tkcbmevda36pld3m0mdl6afhls2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.my_governate_app",
+            "certificate_hash": "6d997551d6673459319f193cea6c0938c13f6b65"
+          }
+        },
+        {
+          "client_id": "519306226072-dodl7gu1pflnar1d0i633mt2tq2kg8g1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOLwBsjmTMOga9Omwe4S20yl0_chnDads"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519306226072-dodl7gu1pflnar1d0i633mt2tq2kg8g1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "519306226072-smbum6mo32hl83hdg6u0o1hr48j2h6do.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myGovernateApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
