@@ -39,16 +39,20 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   isSelected: widget.selectedIndex == 0,
                   onTap: () => widget.onItemTapped(0),
                 ),
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: const Color(0xff0D6EFD),
-                  child: Image.asset("assets/icons/search icon.png", scale: 1.6),
+                
+                GestureDetector(
+                  onTap: () => widget.onItemTapped(1),
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: const Color(0xff0D6EFD),
+                    child: Image.asset("assets/icons/search icon.png", scale: 1.6),
+                  ),
                 ),
                 NavItem(
                   icon: Icons.person_outline,
                   label: "Profile",
-                  isSelected: widget.selectedIndex == 1,
-                  onTap: () => widget.onItemTapped(1),
+                  isSelected: widget.selectedIndex == 2,
+                  onTap: () => widget.onItemTapped(2),
                 ),
               ],
             ),

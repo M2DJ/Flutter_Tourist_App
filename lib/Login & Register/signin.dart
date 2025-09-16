@@ -6,6 +6,7 @@ import 'package:my_governate_app/Login%20&%20Register/signup.dart';
 import 'package:my_governate_app/app_styles.dart';
 import 'package:my_governate_app/main_screens/home.dart';
 import 'package:my_governate_app/services/auth_service.dart';
+import 'package:my_governate_app/theme/app_theme.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -82,6 +83,11 @@ class _SigninState extends State<Signin> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Image.asset(
+                  'assets/images/signin.jpg',
+                  height: 300,
+                  width: 300,
+                ),
                 Text(
                   "Sign in now",
                   style: GoogleFonts.inter(
@@ -94,7 +100,7 @@ class _SigninState extends State<Signin> {
                 Text(
                   "Please sign in to continue our app",
                   style: GoogleFonts.inter(
-                    color:const Color(0xff7D848D),
+                    color: const Color(0xff7D848D),
                     fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
@@ -107,7 +113,11 @@ class _SigninState extends State<Signin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 19),
-
+                      Text(
+                        "Email Address",
+                        style: AppTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: AppTheme.spacingS),
                       // Email
                       SizedBox(
                         width: 335,
@@ -125,14 +135,22 @@ class _SigninState extends State<Signin> {
                             return null;
                           },
                           decoration: AppStyles.inputDecoration(
-                            hintText: "www.uihut@gmail.com",
-                          ),
+                              hintText: "Enter your email",
+                              prefixIcon: const Icon(
+                                Icons.email_outlined,
+                                color: Color(0xFF0D6EFD),
+                              )),
                         ),
                       ),
 
                       const SizedBox(height: 30),
 
                       // Password
+                      Text(
+                        "Password",
+                        style: AppTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: AppTheme.spacingS),
                       SizedBox(
                         width: 335,
                         height: 70,
@@ -142,25 +160,28 @@ class _SigninState extends State<Signin> {
                           controller: passController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter the password';
+                              return 'Enter your password';
                             }
                             return null;
                           },
                           decoration: AppStyles.inputDecoration(
-                            hintText: "**************",
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isObscure = !_isObscure;
-                                });
-                              },
-                              icon: Icon(
-                                _isObscure
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                              hintText: "**************",
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscure = !_isObscure;
+                                  });
+                                },
+                                icon: Icon(
+                                  _isObscure
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
                               ),
-                            ),
-                          ),
+                              prefixIcon: const Icon(
+                                Icons.lock_outline_rounded,
+                                color: Color(0xFF0D6EFD),
+                              )),
                         ),
                       ),
                     ],
@@ -183,7 +204,7 @@ class _SigninState extends State<Signin> {
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color:const Color(0xFF0D6EFD),
+                          color: const Color(0xFF0D6EFD),
                         ),
                       ),
                     ),
@@ -234,10 +255,10 @@ class _SigninState extends State<Signin> {
                   "Or Connect ",
                   style: GoogleFonts.inter(
                     fontSize: 14,
-                    color:const  Color(0xff707B81),
+                    color: const Color(0xff707B81),
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -245,18 +266,18 @@ class _SigninState extends State<Signin> {
                     SocialCircle(
                       child: Image.asset(
                         'assets/images/Frame 4.png',
-                        width: 20,
-                        height: 20,
+                        width: 30,
+                        height: 30,
                       ),
                     ),
-                    const SizedBox(width: 5),
+                    const SizedBox(width: 30),
 
                     // Facebook icon
-                     const SocialCircle(
-                      child:  FaIcon(
+                    const SocialCircle(
+                      child: FaIcon(
                         FontAwesomeIcons.facebookF,
-                        color:  Color(0xff3D4DA6),
-                        size: 20,
+                        color: Color(0xff3D4DA6),
+                        size: 30,
                       ),
                     ),
                   ],
