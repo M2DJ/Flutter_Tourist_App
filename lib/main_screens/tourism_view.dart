@@ -48,14 +48,14 @@ class _TourismViewState extends State<TourismView> {
                         ),
                       )
                     : 
-                    PostView(
-                        imagePath: post["imagePath"],
-                        numOfVotes: post["numOfVotes"],
-                        rate: post["rate"],
-                        title: post["title"],
-                        content: post["content"],
-                      ),
-                    // PostView(xid: post['id'])
+                    // PostView(
+                    //     imagePath: post["imagePath"],
+                    //     numOfVotes: post["numOfVotes"],
+                    //     rate: post["rate"],
+                    //     title: post["title"],
+                    //     content: post["content"],
+                    //   ),
+                    PostView(xid: post['id'])
               ),
             );
 

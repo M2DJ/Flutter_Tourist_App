@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:my_governate_app/providers/data_provider.dart';
 import 'package:my_governate_app/widgets/custom_app_bar.dart';
 import 'package:my_governate_app/widgets/voting_row.dart';
-
+import 'package:provider/provider.dart';
 
 class PostView extends StatelessWidget {
-  final String? title;
-  final String? imagePath;
-  final String? content;
-  final String? rate;
-  final int? numOfVotes;
-  
+  final String xid;
 
-  const PostView(
-      {super.key,
-      this.imagePath,
-      this.content,
-      this.rate,
-      this.numOfVotes,
-      this.title});
+  const PostView({super.key, required this.xid});
 
   @override
   Widget build(BuildContext context) {
+    final dataProvider = context.watch<DataProvider>();
+    final post = dataProvider.getTourismPosts
+        .firstWhere((p) => p['id'] == xid, orElse: () => {});
+
+    if (post.isEmpty) {
+      return const Scaffold(
+        body: Center(
+          child: Text("Post not found"),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: const CustomAppBar(),
       backgroundColor: Colors.white,
@@ -37,27 +39,35 @@ class PostView extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(4),
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(7),
-                      child: Image.asset(
-                        imagePath!,
-                        fit: BoxFit.fill,
-                        width: double.infinity,
-                      )),
+                    borderRadius: BorderRadius.circular(7),
+                    child: post['imagePath'] != null &&
+                            post['imagePath'].toString().startsWith('http')
+                        ? Image.network(
+                            post['imagePath'],
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                          )
+                        : Image.asset(
+                            'assets/images/Missing-Image.png',
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                          ),
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 14,
               ),
-              VotingRow(numOfVotes: numOfVotes!, rate: rate!),
+              VotingRow(numOfVotes: post["numOfVotes"] ?? '0', rate: post['rate'].toString()),
               const SizedBox(
                 height: 10,
               ),
               Text(
-                title!,
+                post['title'] ?? 'No Title',
                 style: const TextStyle(fontSize: 23),
               ),
               Text(
-                content!,
+                post['content'] ?? "Loading decription...",
                 style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
               const SizedBox(
