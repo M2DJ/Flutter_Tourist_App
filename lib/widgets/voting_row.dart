@@ -43,7 +43,7 @@ class VotingRow extends StatelessWidget {
             child: CircleAvatar(
               radius: 13,
               child: Text(
-                "+${numOfVotes!}",
+                "+$numOfVotes",
                 style: const TextStyle(fontSize: 10),
               ),
             ),
