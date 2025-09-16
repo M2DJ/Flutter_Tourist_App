@@ -13,11 +13,11 @@ class ServicesView extends StatelessWidget {
       itemBuilder: (context, index) {
         final post = servicesPosts[index];
         return PostModel(
-          title: post["title"]!,
-          imagePath: post["imagePath"]!,
-          numOfVotes: post["numOfVotes"]!,
-          rate: post["rate"]!,
-          content: post["content"]!,
+          title: post["title"],
+          imagePath: post["imagePath"],
+          numOfVotes: post["numOfVotes"],
+          rate: post["rate"],
+          content: post["content"],
         );
       },
     );

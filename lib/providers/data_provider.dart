@@ -35,12 +35,12 @@ class DataProvider extends ChangeNotifier {
           mappedTourismPosts.add({
             "id": features[i]['properties']['xid'],
             "title": features[i]['properties']['name'] ?? 'Unnamed Place',
-            // "imagePath": image,
-            // "rate": rating,
-            // "numOfVotes": 0,
+            "imagePath": 'assets/images/Missing-image.png',
+            "rate": "0",
+            "numOfVotes": 0,
             "lat": features[i]['geometry']['coordinates'][1],
             "lng": features[i]['geometry']['coordinates'][0],
-            // "content": description,
+            "content": '',
           });
         }
         _tourismPosts.addAll(mappedTourismPosts);
@@ -57,15 +57,25 @@ class DataProvider extends ChangeNotifier {
     try {
       tourismInfo = await _apiCaller.fetchPlaceInfo(xid);
 
+      print("Fetched tourism info for $xid: $tourismInfo");
+
       final index = _tourismPosts.indexWhere((post) => post['id'] == xid);
       if (index != -1) {
-        _tourismPosts[index]["imagePath"] =
-            tourismInfo['image'] ?? 'assets/images/Missing-image.png';
-        _tourismPosts[index]["rate"] = tourismInfo['rate'] ?? '0';
-        _tourismPosts[index]["numOfVotes"] = 0;
-        _tourismPosts[index]["content"] = tourismInfo['wikipedia_extract']
-                ?['text'] ??
-            "No description available at the moment";
+        final updatedPost = Map<String, dynamic>.from(_tourismPosts[index]);
+
+        if (tourismInfo['image'] != null) {
+          updatedPost["imagePath"] = tourismInfo['image'];
+        }
+        if (tourismInfo['rate'] != null) {
+          updatedPost["rate"] = tourismInfo['rate'];
+        }
+        if (tourismInfo['wikipedia_extracts']?['text'] != null) {
+          updatedPost["content"] = tourismInfo['wikipedia_extracts']['text'];
+        }
+
+        _tourismPosts[index] = updatedPost;
+
+        print("Updated post: $_tourismPosts[index]");
         notifyListeners();
       }
     } on Exception catch (e) {
@@ -121,7 +131,7 @@ class DataProvider extends ChangeNotifier {
             servicesInfo['image'] ?? 'assets/images/Missing-image.png';
         _servicesPosts[index]["rate"] = servicesInfo['rate'] ?? '0';
         _servicesPosts[index]["numOfVotes"] = 0;
-        _servicesPosts[index]["content"] = servicesInfo['wikipedia_extract']
+        _servicesPosts[index]["content"] = servicesInfo['wikipedia_extracts']
                 ?['text'] ??
             "No description available at the moment";
         notifyListeners();
@@ -178,7 +188,7 @@ class DataProvider extends ChangeNotifier {
             trafficInfo['image'] ?? 'assets/images/Missing-image.png';
         _trafficsPosts[index]["rate"] = trafficInfo['rate'] ?? '0';
         _trafficsPosts[index]["numOfVotes"] = 0;
-        _trafficsPosts[index]["content"] = trafficInfo['wikipedia_extract']
+        _trafficsPosts[index]["content"] = trafficInfo['wikipedia_extracts']
                 ?['text'] ??
             "No description available at the moment";
         notifyListeners();
