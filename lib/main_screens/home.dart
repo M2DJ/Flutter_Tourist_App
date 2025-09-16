@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_governate_app/main_screens/search.dart';
 import 'package:my_governate_app/main_screens/timeline.dart';
 import 'package:my_governate_app/profile/profile.dart';
 import 'package:my_governate_app/widgets/custom_app_bar.dart';
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = const [
     TimelineScreen(),
+    Search(),
     Profile(),
   ];
 

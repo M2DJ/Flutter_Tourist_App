@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_governate_app/app_styles.dart';
-// import 'package:goverment_app/Profile/edit_profile.dart';
+import 'package:my_governate_app/profile/edit_profile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -89,7 +89,7 @@ class _ProfileState extends State<Profile> {
                             Icons.local_phone_outlined,
                             color: Color(0xffABABAB),
                           ),
-                          hintText: "+93123135",
+                          hintText: "+201145687786",
                         ),
                       ),
                     ),
@@ -156,18 +156,17 @@ class _ProfileState extends State<Profile> {
                   text: "Edit Profile",
                   size: const Size(327, 48),
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const EditProfile(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EditProfile(),
+                      ),
+                    );
                   },
                   textSize: 16,
                   borderRadius: 10,
                 ),
-              const SizedBox(height: 80),
-
+                const SizedBox(height: 80),
               ],
             ),
           ),

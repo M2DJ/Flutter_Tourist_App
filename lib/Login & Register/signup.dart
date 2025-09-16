@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_governate_app/Login%20&%20Register/signin.dart';
 import 'package:my_governate_app/app_styles.dart';
 import 'package:my_governate_app/services/auth_service.dart';
-
+import 'package:my_governate_app/theme/app_theme.dart';
 
 class SignUp extends StatefulWidget {
   final String selectedCity;
@@ -76,13 +76,19 @@ class _SignUpState extends State<SignUp> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView( // علشان الكيبورد ما يغطيش الفورم
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            // child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Image.asset(
+                  'assets/images/signin.jpg',
+                  height: 300,
+                  width: 300,
+                ),
                 Text(
                   "Sign up now",
                   style: GoogleFonts.inter(
@@ -95,7 +101,7 @@ class _SignUpState extends State<SignUp> {
                 Text(
                   "Please fill the details and create account",
                   style: GoogleFonts.inter(
-                    color:const Color(0xff7D848D),
+                    color: const Color(0xff7D848D),
                     fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
@@ -107,6 +113,10 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        "Name",
+                        style: AppTheme.bodyLarge,
+                      ),
                       // full name
                       SizedBox(
                         width: 335,
@@ -115,16 +125,22 @@ class _SignUpState extends State<SignUp> {
                           controller: fnameController,
                           cursorColor: Colors.black,
                           keyboardType: TextInputType.name,
-                          validator: (value) =>
-                              (value == null || value.isEmpty)
-                                  ? 'Please enter the Full Name'
-                                  : null,
+                          validator: (value) => (value == null || value.isEmpty)
+                              ? 'Please enter the Full Name'
+                              : null,
                           decoration: AppStyles.inputDecoration(
-                            hintText: "Leonardo Smith",
-                          ),
+                              hintText: "UserName",
+                              prefixIcon: const Icon(
+                                Icons.person_2_outlined,
+                                color: Color(0xFF0D6EFD),
+                              )),
                         ),
                       ),
                       const SizedBox(height: 10),
+                      Text(
+                        "Email",
+                        style: AppTheme.bodyLarge,
+                      ),
                       // Email
                       SizedBox(
                         width: 335,
@@ -142,11 +158,18 @@ class _SignUpState extends State<SignUp> {
                             return null;
                           },
                           decoration: AppStyles.inputDecoration(
-                            hintText: "www.uihut@gmail.com",
-                          ),
+                              hintText: "Enter your email",
+                              prefixIcon: const Icon(
+                                Icons.email_outlined,
+                                color: Color(0xFF0D6EFD),
+                              )),
                         ),
                       ),
                       const SizedBox(height: 10),
+                      Text(
+                        "Password",
+                        style: AppTheme.bodyLarge,
+                      ),
                       // Password
                       SizedBox(
                         width: 335,
@@ -164,20 +187,23 @@ class _SignUpState extends State<SignUp> {
                             return null;
                           },
                           decoration: AppStyles.inputDecoration(
-                            hintText: "**************",
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isObscure = !_isObscure;
-                                });
-                              },
-                              icon: Icon(
-                                _isObscure
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                              hintText: "Enter your password ",
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscure = !_isObscure;
+                                  });
+                                },
+                                icon: Icon(
+                                  _isObscure
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
                               ),
-                            ),
-                          ),
+                              prefixIcon: const Icon(
+                                Icons.lock_outline_rounded,
+                                color: Color(0xFF0D6EFD),
+                              )),
                         ),
                       ),
                     ],
@@ -199,7 +225,7 @@ class _SignUpState extends State<SignUp> {
                       "Already have an account",
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        color:const Color(0xff707B81),
+                        color: const Color(0xff707B81),
                       ),
                     ),
                     TextButton(
@@ -229,23 +255,23 @@ class _SignUpState extends State<SignUp> {
                     color: const Color(0xff707B81),
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SocialCircle(
                       child: Image.asset(
                         'assets/images/Frame 4.png',
-                        width: 20,
-                        height: 20,
+                        width: 30,
+                        height: 30,
                       ),
                     ),
-                    const SizedBox(width: 5),
-                   const  SocialCircle(
+                    const SizedBox(width: 30),
+                    const SocialCircle(
                       child: FaIcon(
                         FontAwesomeIcons.facebookF,
                         color: Color(0xff3D4DA6),
-                        size: 20,
+                        size: 30,
                       ),
                     ),
                   ],
