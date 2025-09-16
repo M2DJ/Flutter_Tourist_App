@@ -3,6 +3,7 @@ import 'package:my_governate_app/providers/data_provider.dart';
 import 'package:my_governate_app/widgets/custom_app_bar.dart';
 import 'package:my_governate_app/widgets/voting_row.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostView extends StatelessWidget {
   final String xid;
@@ -15,6 +16,17 @@ class PostView extends StatelessWidget {
     final post = dataProvider.getTourismPosts
         .firstWhere((p) => p['id'] == xid, orElse: () => {});
 
+    void navigateToMap(double lat, double lng) async {
+    final Uri url =
+        Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open the map.')),
+      );
+    }
+  }
     if (post.isEmpty) {
       return Scaffold(
         appBar: AppBar(
@@ -85,9 +97,9 @@ class PostView extends StatelessWidget {
               Row(
                 children: [
                   Icon(Icons.place, color: Colors.grey.shade700),
-                  Text(
-                    "Giza Necropolis, Al Haram, Giza Governorate,\n Greater Cairo, Egypt",
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                  TextButton(
+                    onPressed: () => navigateToMap(post['lat'], post['lng']),
+                    child: Text('${post['title']} Location', style: TextStyle(fontSize: 14, color: Colors.grey.shade700),),
                   )
                 ],
               ),
