@@ -21,7 +21,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       backgroundColor: Colors.white,
       body: PageView(
         controller: controller,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
           setState(() {
             num = index + 1;
@@ -50,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             TextSpan(
                               text: "/3",
                               style: GoogleFonts.inter(
-                                color: Color(0xFFA0A0A1),
+                                color: const Color(0xFFA0A0A1),
                                 fontSize: 16,
                               ),
                             ),
@@ -78,7 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50),
+                 const SizedBox(height: 50),
                   //first page
                   Image.asset(
                     'assets/images/image 1.png',
@@ -114,7 +114,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       SmoothPageIndicator(
                         controller: controller,
                         count: 3,
-                        effect: ExpandingDotsEffect(
+                        effect: const ExpandingDotsEffect(
                           activeDotColor: const Color(0xFF413F3F),
                           dotHeight: 5,
                           dotWidth: 5,
@@ -122,10 +122,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           spacing: 8,
                         ),
                       ),
-                      SizedBox(width: 70),
+                     const SizedBox(width: 70),
                       CustomButton(
                         text: 'Next',
-                        size: Size(80, 45),
+                        size:const Size(80, 45),
                         onPressed: () {
                           controller.nextPage(
                             duration: const Duration(milliseconds: 500),
@@ -165,7 +165,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             TextSpan(
                               text: "/3",
                               style: GoogleFonts.inter(
-                                color: Color(0xFFA0A0A1),
+                                color:const Color(0xFFA0A0A1),
                                 fontSize: 16,
                               ),
                             ),
@@ -193,7 +193,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50),
+                const  SizedBox(height: 50),
                   Image.asset(
                     'assets/images/image 2.png',
                     height: 206,
@@ -245,7 +245,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       SmoothPageIndicator(
                         controller: controller,
                         count: 3,
-                        effect: ExpandingDotsEffect(
+                        effect:const ExpandingDotsEffect(
                           activeDotColor: const Color(0xFF413F3F),
                           dotHeight: 5,
                           dotWidth: 5,
@@ -255,7 +255,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       CustomButton(
                         text: 'Next',
-                        size: Size(80, 45),
+                        size:const Size(80, 45),
                         onPressed: () {
                           controller.nextPage(
                             duration: const Duration(milliseconds: 500),
@@ -295,7 +295,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             TextSpan(
                               text: "/3",
                               style: GoogleFonts.inter(
-                                color: Color(0xFFA0A0A1),
+                                color:const Color(0xFFA0A0A1),
                                 fontSize: 16,
                               ),
                             ),
@@ -323,7 +323,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50),
+                const  SizedBox(height: 50),
                   Image.asset(
                     'assets/images/image 3.png',
                     height: 206,
@@ -375,7 +375,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       SmoothPageIndicator(
                         controller: controller,
                         count: 3,
-                        effect: ExpandingDotsEffect(
+                        effect:const ExpandingDotsEffect(
                           activeDotColor: const Color(0xFF413F3F),
                           dotHeight: 5,
                           dotWidth: 5,
@@ -385,12 +385,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       CustomButton(
                         text: 'Get Started',
-                        size: Size(120, 39),
+                        size:const Size(120, 39),
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GovernmentSelectionScreen(),
+                              builder: (context) =>const GovernmentSelectionScreen(),
                             ),
                           );
                         },

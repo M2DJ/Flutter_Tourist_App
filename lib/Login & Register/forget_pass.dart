@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_governate_app/app_styles.dart';
 import 'package:my_governate_app/Login%20&%20Register/pop_out.dart';
-
+import 'package:my_governate_app/theme/app_theme.dart';
 
 class ForgetPass extends StatefulWidget {
   const ForgetPass({super.key});
@@ -26,13 +26,20 @@ class _ForgetPassState extends State<ForgetPass> {
           icon: const Icon(Icons.arrow_back, size: 20),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          // child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            // mainAxisSize: MainAxisSize.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const   SizedBox(height: 30),
+              Image.asset(
+                'assets/images/pass2.jpeg',
+                height: 300,
+                width: 300,
+              ),
+              const SizedBox(height: 30),
               const Text(
                 "Forget Password",
                 style: TextStyle(
@@ -45,13 +52,18 @@ class _ForgetPassState extends State<ForgetPass> {
               Text(
                 "Enter your email account to reset  your password",
                 style: GoogleFonts.inter(
-                 color: const Color(0xff7D848D),
+                  color: const Color(0xff7D848D),
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 50),
-
+              Text(
+                "Email Address",
+                style: AppTheme.bodyLarge,
+                textAlign: TextAlign.left,
+              ),
+              const SizedBox(height: AppTheme.spacingS),
               Form(
                 key: _formKey,
                 child: SizedBox(
@@ -70,15 +82,16 @@ class _ForgetPassState extends State<ForgetPass> {
                       return null;
                     },
                     decoration: AppStyles.inputDecoration(
-                      hintText: 
-                        "www.uihut@gmail.com",
-                        
+                      prefixIcon: const Icon(
+                        Icons.email_outlined,
+                        color: Color(0xFF0D6EFD),
+                      ),
+                      hintText: "Pleaase enter your email",
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 50),
-
+              const SizedBox(height: 50),
               CustomButton(
                 text: "Reset Password",
                 size: const Size(327, 48),

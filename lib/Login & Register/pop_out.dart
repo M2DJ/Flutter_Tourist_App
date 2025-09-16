@@ -20,7 +20,7 @@ class PopOut extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             CircleAvatar(
-              backgroundColor: Color(0xFF0D6EFD),
+              backgroundColor: const Color(0xFF0D6EFD),
               child: Image.asset(
                 'assets/images/Email (1).png',
                 height: 26,
@@ -40,7 +40,8 @@ class PopOut extends StatelessWidget {
             const SizedBox(height: 5),
             Text(
               "We have sent password recovery instruction to your email",
-              style: GoogleFonts.inter(color: Color(0xff7D848D), fontSize: 14),
+              style: GoogleFonts.inter(
+                  color: const Color(0xff7D848D), fontSize: 14),
               textAlign: TextAlign.center,
             ),
           ],

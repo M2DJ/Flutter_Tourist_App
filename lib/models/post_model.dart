@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_governate_app/main_screens/post_view.dart';
 import 'package:my_governate_app/widgets/voting_row.dart';
-
 
 class PostModel extends StatelessWidget {
   final String? title;
   final String? imagePath;
-  final double? rate;
+  final String? rate;
   final int? numOfVotes;
   final String? content;
 
@@ -44,35 +42,26 @@ class PostModel extends StatelessWidget {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return PostView(
-                        imagePath: imagePath!,
-                        numOfVotes: numOfVotes,
-                        rate: rate,
-                        title: title!,
-                        content: content!,
-                      );
-                    },
-                  ));
-                },
-                child: SizedBox(
+              SizedBox(
                   height: 200,
                   width: MediaQuery.sizeOf(context).width * 0.9,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(7),
-                        child: Image.asset(
-                          imagePath!,
-                          fit: BoxFit.fill,
-                          width: double.infinity,
-                        )),
+                        child: imagePath!.startsWith('http')
+                            ? Image.network(
+                                imagePath!,
+                                fit: BoxFit.fill,
+                                width: double.infinity,
+                              )
+                            : Image.asset(
+                                'assets/images/Missing-Image.png',
+                                fit: BoxFit.fill,
+                                width: double.infinity,
+                              )),
                   ),
                 ),
-              ),
               VotingRow(numOfVotes: numOfVotes, rate: rate),
             ],
           ),
